@@ -1,0 +1,58 @@
+% ==================== 页面与字体 ====================
+% 使用 TeX Live 自带 Fandol 字体，避免依赖本机 Windows 字体。
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{setspace}
+\setstretch{1.28}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+
+% ==================== 数学、表格与图片 ====================
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{booktabs,multirow,array,longtable,tabularx}
+\usepackage{graphicx,float,subcaption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{siunitx}
+\sisetup{detect-all}
+
+% ==================== 版式与引用 ====================
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{hidelinks,pdfauthor={},pdftitle={\PaperTitle}}
+
+% 页码位于页脚中部；正文与附录均不放身份信息。
+\fancypagestyle{cumcm}{%
+  \fancyhf{}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+% 标题层级：不使用目录，但保留清晰层次。
+\titleformat{\section}{\centering\heiti\zihao{3}}{\thesection}{1em}{}
+\titleformat{\subsection}{\heiti\zihao{4}}{\thesubsection}{0.8em}{}
+\titleformat{\subsubsection}{\heiti\zihao{-4}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.8em}
+\titlespacing*{\subsection}{0pt}{1.0em}{0.5em}
+\titlespacing*{\subsubsection}{0pt}{0.8em}{0.3em}
+
+\setlist[itemize]{leftmargin=2.5em,itemsep=0.2em,topsep=0.3em}
+\setlist[enumerate]{leftmargin=2.8em,itemsep=0.2em,topsep=0.3em}
+
+% 常用列类型。
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% 骨架中的待填文字；交稿前应全部替换或删除。
+\newcommand{\todo}[1]{\textcolor{gray}{【待补：#1】}}
+\newcommand{\modelname}[1]{\textbf{#1}}
+
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}

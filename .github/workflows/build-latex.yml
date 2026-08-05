@@ -1,0 +1,42 @@
+name: Build LaTeX PDF
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: latex-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Compile paper with XeLaTeX
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Compile paper/main.tex with XeLaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: paper
+          root_file: main.tex
+          texlive_version: 2026
+          os: debian
+          latexmk_use_xelatex: true
+
+      - name: Upload compiled PDF
+        uses: actions/upload-artifact@v7
+        with:
+          name: cumcm16A-paper-pdf
+          path: paper/main.pdf
+          if-no-files-found: error
+          retention-days: 30
