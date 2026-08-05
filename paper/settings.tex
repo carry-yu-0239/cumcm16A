@@ -48,7 +48,8 @@
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
 % 骨架中的待填文字；交稿前应全部替换或删除。
-\newcommand{\todo}[1]{\textcolor{gray}{【待补：#1】}}
+% 使用 parbox 允许较长提示换行，参数中的特殊字符仍需按 LaTeX 规则转义。
+\newcommand{\todo}[1]{\textcolor{gray}{\parbox{\linewidth}{【待补：#1】}}}
 \newcommand{\modelname}[1]{\textbf{#1}}
 
 \renewcommand{\figurename}{图}
