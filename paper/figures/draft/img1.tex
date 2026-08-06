@@ -1,0 +1,119 @@
+% 图 1
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,calc}
+
+\definecolor{memberred}{HTML}{B20000}
+
+\begin{document}
+\begin{tikzpicture}[
+  line cap=round,
+  line join=round,
+  force/.style={
+    draw=black,
+    line width=0.9pt,
+    -{Stealth[length=2.8mm,width=2.2mm]}
+  },
+  guide/.style={
+    draw=black,
+    line width=0.8pt,
+    dash pattern=on 2.2pt off 2.2pt
+  },
+  anglemark/.style={
+    draw=black,
+    line width=0.8pt
+  },
+  every node/.style={font=\small}
+]
+
+  \coordinate (A) at (0,0);
+  \coordinate (C) at (1.4,1.4);
+  \coordinate (B) at (2.8,2.8);
+
+  % 红色连杆
+  \draw[memberred,line width=1.0pt] (A) -- (B);
+
+  % 上端节点 i
+  \draw[guide] (B) -- ++(0,1.40);
+  \draw[guide] (B) -- ++(0,-0.70);
+  \draw[guide] (B) -- ++(1.40,1.40);
+
+  \draw[force]
+    (B) -- ++(1.05,2.10)
+    node[above right=-1pt] {$T_i$};
+
+  % 上端角度
+  \draw[anglemark]
+    ($(B)+(90:1.05)$)
+    arc[
+      start angle=90,
+      end angle=63.435,
+      radius=1.05
+    ];
+
+  \draw[anglemark]
+    ($(B)+(90:0.875)$)
+    arc[
+      start angle=90,
+      end angle=45,
+      radius=0.875
+    ];
+
+  \node at ($(B)+(0.35,1.23)$) {$\theta_i$};
+  \node at ($(B)+(0.70,0.53)$) {$\varphi_i$};
+
+  % 中部受力
+  \draw[force]
+    (C) -- ++(0,1.05)
+    node[above] {$F_i$};
+
+  \draw[force]
+    (C) -- ++(0,-1.40)
+    node[below] {$G_i$};
+
+  \draw[anglemark]
+    ($(C)+(-90:0.35)$)
+    arc[
+      start angle=-90,
+      end angle=-135,
+      radius=0.35
+    ];
+
+  \node at ($(C)+(-0.18,-0.53)$) {$\varphi_1$};
+
+  % 下端节点 i+1
+  \draw[guide]
+    ($(A)+(0,0.70)$) -- ($(A)+(0,-1.40)$);
+
+  \draw[guide]
+    (A) -- ++(-1.40,-1.40);
+
+  \draw[force]
+    (A) -- ++(-2.45,-0.70)
+    node[below left=-1pt] {$T_{i+1}$};
+
+  % 下端角度
+  \draw[anglemark]
+    ($(A)+(-90:1.05)$)
+    arc[
+      start angle=-90,
+      end angle=-135,
+      radius=1.05
+    ];
+
+  \draw[anglemark]
+    ($(A)+(-90:0.70)$)
+    arc[
+      start angle=-90,
+      end angle=-164.055,
+      radius=0.70
+    ];
+
+  \node at ($(A)+(-0.88,-0.53)$) {$\theta_{i+1}$};
+  \node at ($(A)+(-0.53,-1.23)$) {$\varphi_i$};
+
+  \path[use as bounding box]
+    (-3.25,-1.75) rectangle (4.65,5.95);
+
+\end{tikzpicture}
+\end{document}

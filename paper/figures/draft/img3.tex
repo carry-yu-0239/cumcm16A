@@ -1,0 +1,257 @@
+\documentclass[tikz,border=4pt]{standalone}
+
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta}
+
+\definecolor{rodblue}{rgb}{0.02,0.16,0.58}
+\definecolor{anglered}{rgb}{0.62,0.00,0.02}
+
+\begin{document}
+
+\begin{tikzpicture}[
+    x=1cm,
+    y=1cm,
+    line cap=round,
+    line join=round,
+    force/.style={
+        draw=black,
+        line width=2.8pt,
+        -{Stealth[length=4.2mm,width=3.2mm]}
+    },
+    extension/.style={
+        draw=black,
+        line width=1.9pt,
+        dash pattern=on 6pt off 5pt
+    },
+    normal/.style={
+        draw=anglered,
+        line width=1.9pt,
+        dash pattern=on 6pt off 5pt
+    },
+    angle arc/.style={
+        draw=anglered,
+        line width=2.2pt
+    },
+    force label/.style={
+        text=black,
+        font=\fontsize{24}{28}\selectfont
+    },
+    angle label/.style={
+        text=anglered,
+        font=\fontsize{22}{26}\selectfont
+    }
+]
+
+% ============================================================
+% 1. 关键点
+% ============================================================
+
+\coordinate (A) at (0,0);
+\coordinate (B) at (2.15,3.05);
+\coordinate (C) at (1.204,1.708);
+
+% 蓝色杆件方向单位向量约为：
+% u = (0.5762, 0.8173)
+
+\coordinate (LowerExtension) at (-0.749,-1.063);
+\coordinate (UpperExtension) at (2.830,4.014);
+
+% T_5、T_6 端点
+\coordinate (TfiveEnd) at (2.558,4.700);
+\coordinate (TsixEnd)  at (-1.795,-0.761);
+
+% ============================================================
+% 2. 蓝色杆件
+% ============================================================
+
+\draw[
+    draw=rodblue,
+    line width=4.2pt
+]
+(A) -- (B);
+
+% ============================================================
+% 3. 杆件延长线
+% ============================================================
+
+\draw[extension]
+(A) -- (LowerExtension);
+
+\draw[extension]
+(B) -- (UpperExtension);
+
+% ============================================================
+% 4. 顶部竖直法线
+% ============================================================
+
+\draw[normal]
+(B) -- ++(0,1.28);
+
+% ============================================================
+% 5. A 点受力
+% ============================================================
+
+% F_s
+\draw[force]
+(A) -- ++(0,1.18);
+
+% G_s
+\draw[force]
+(A) -- ++(0,-1.72);
+
+% T_6
+\draw[force]
+(A) -- (TsixEnd);
+
+% ============================================================
+% 6. C 点受力
+% ============================================================
+
+% F_5
+\draw[force]
+(C) -- ++(0,1.45);
+
+% G_5
+\draw[force]
+(C) -- ++(0,-2.15);
+
+% ============================================================
+% 7. B 点受力
+% ============================================================
+
+% T_5
+\draw[force]
+(B) -- (TfiveEnd);
+
+% ============================================================
+% 8. 作用点
+% ============================================================
+
+\fill[black] (A) circle[radius=2.1pt];
+\fill[black] (B) circle[radius=2.1pt];
+\fill[black] (C) circle[radius=1.65pt];
+
+% ============================================================
+% 9. 力的标注
+% ============================================================
+
+\node[
+    force label,
+    anchor=south east
+] at (-0.15,1.32) {$F_s$};
+
+\node[
+    force label,
+    anchor=north
+] at (-0.07,-1.90) {$G_s$};
+
+\node[
+    force label,
+    anchor=north east
+] at (-1.895,-0.861) {$T_6$};
+
+\node[
+    force label,
+    anchor=south east
+] at (1.044,3.278) {$F_5$};
+
+\node[
+    force label,
+    anchor=north west
+] at (1.304,-0.542) {$G_5$};
+
+\node[
+    force label,
+    anchor=south west
+] at (2.608,4.740) {$T_5$};
+
+% ============================================================
+% 10. A 点的 theta_6
+% T_6 与竖直向下方向的夹角
+% ============================================================
+
+\draw[angle arc]
+($(A)+(-157.02:0.55)$)
+arc[
+    start angle=-157.02,
+    end angle=-90,
+    radius=0.55
+];
+
+\node[angle label]
+at (-0.43,-0.52) {$\theta_6$};
+
+% ============================================================
+% 11. A 点下部的 varphi_5
+% 杆件左下延长线与竖直向下方向的夹角
+% ============================================================
+
+\draw[angle arc]
+($(A)+(-125.18:0.94)$)
+arc[
+    start angle=-125.18,
+    end angle=-90,
+    radius=0.94
+];
+
+\node[angle label]
+at (-0.18,-0.94) {$\varphi_5$};
+
+% ============================================================
+% 12. C 点的 varphi_5
+% 杆件左下方向与 G_5 的夹角
+% ============================================================
+
+\draw[angle arc]
+($(C)+(-125.18:0.43)$)
+arc[
+    start angle=-125.18,
+    end angle=-90,
+    radius=0.43
+];
+
+\node[angle label]
+at (0.934,1.218) {$\varphi_5$};
+
+% ============================================================
+% 13. B 点的 theta_5
+% 顶部竖直法线与 T_5 的夹角
+% ============================================================
+
+\draw[angle arc]
+($(B)+(90:0.39)$)
+arc[
+    start angle=90,
+    end angle=76.10,
+    radius=0.39
+];
+
+\node[angle label]
+at (2.22,3.57) {$\theta_5$};
+
+% ============================================================
+% 14. B 点顶部的 varphi_5
+% 杆件右上延长线与顶部法线的夹角
+% ============================================================
+
+\draw[angle arc]
+($(B)+(54.82:0.72)$)
+arc[
+    start angle=54.82,
+    end angle=90,
+    radius=0.72
+];
+
+\node[angle label]
+at (2.77,3.72) {$\varphi_5$};
+
+% ============================================================
+% 15. 绘图范围
+% ============================================================
+
+\path[use as bounding box]
+(-2.65,-2.45) rectangle (4.35,5.15);
+
+\end{tikzpicture}
+
+\end{document}
