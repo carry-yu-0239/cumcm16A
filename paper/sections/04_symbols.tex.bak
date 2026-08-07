@@ -1,0 +1,109 @@
+```tex
+\section{符号说明}
+
+本文采用国际单位制，建模过程中使用的主要全局符号如表
+\ref{tab:main-symbols} 所示。
+各符号在后文首次进入具体方程时仍结合相应物理意义再次说明。
+
+\begin{table}[H]
+  \centering
+  \caption{主要符号说明}
+  \label{tab:main-symbols}
+  \small
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{0.9\textwidth}
+    {C{0.18\textwidth}L{0.48\textwidth}Y}
+    \toprule
+    符号 & 含义 & 单位 \\
+    \midrule
+
+    \(\rho\)
+    & 海水密度
+    & \si{\kilogram\per\meter\cubed} \\
+
+    \(H\)
+    & 布放海域水深
+    & \si{\meter} \\
+
+    \(v_{\mathrm w},\,v_{\mathrm c}\)
+    & 海面风速和海水流速
+    & \si{\meter\per\second} \\
+
+    \(\kappa\)
+    & 锚链型号编号，分别以 \(1,\ldots,5\) 对应 I--V 型锚链
+    & -- \\
+
+    \(L\)
+    & 锚链总长度
+    & \si{\meter} \\
+
+    \(L_{0}\)
+    & 锚链在海床上的卧底长度
+    & \si{\meter} \\
+
+    \(\mu_{\kappa}\)
+    & 第 \(\kappa\) 型锚链的单位长度质量
+    & \si{\kilogram\per\meter} \\
+
+    \(\omega_{\kappa}\)
+    & 第 \(\kappa\) 型锚链在水中的有效单位长度重力
+    & \si{\newton\per\meter} \\
+
+    \(m_{\mathrm s}\)
+    & 重物球质量
+    & \si{\kilogram} \\
+
+    \(A^{\perp}_{\mathrm w,j},\,
+      A^{\perp}_{\mathrm c,j}\)
+    & 构件 \(j\) 在风向和水流方向法平面内的投影面积
+    & \si{\meter\squared} \\
+
+    \(F_{\mathrm w,j},\,F_{\mathrm c,j}\)
+    & 构件 \(j\) 所受风荷载和水流荷载的大小
+    & \si{\newton} \\
+
+    \(T_{\mathrm h},\,T_{\mathrm v}(s)\)
+    & 锚链张力的水平分量和竖直分量
+    & \si{\newton} \\
+
+    \(s;\,x(s),\,z(s)\)
+    & 自锚端起算的锚链弧长及对应点的水平、竖直坐标
+    & \si{\meter} \\
+
+    \(\theta_i\)
+    & 第 \(i\) 节钢管轴线与竖直方向的夹角
+    & \si{\degree} \\
+
+    \(\theta_{\mathrm d}\)
+    & 钢桶轴线与竖直方向的夹角
+    & \si{\degree} \\
+
+    \(\varphi_{\mathrm a}\)
+    & 锚链在锚端的切线与水平海床的夹角
+    & \si{\degree} \\
+
+    \(\delta\)
+    & 浮标沿竖直方向的吃水深度
+    & \si{\meter} \\
+
+    \(r\)
+    & 浮标相对锚点的水平偏移量，即轴对称情形下的游动半径
+    & \si{\meter} \\
+
+    \(\bm\xi\)
+    & 系泊系统设计变量向量，
+      \(\bm\xi=(\kappa,L,m_{\mathrm s})^{\mathsf T}\)
+    & -- \\
+
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+其中，四节钢管由浮标向钢桶依次编号为
+\(i=1,2,3,4\)；
+下标 \(\mathrm w\) 和 \(\mathrm c\) 分别表示风和水流，
+下标 \(\mathrm d\)、\(\mathrm s\) 和 \(\mathrm a\)
+分别表示钢桶、重物球和锚端。
+角度在模型推导和数值计算中统一采用弧度，
+在结果展示时换算为度。
+```

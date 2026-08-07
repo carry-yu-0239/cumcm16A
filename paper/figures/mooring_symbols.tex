@@ -1,0 +1,217 @@
+% !TEX program = xelatex
+% 系泊系统结构及主要几何符号示意图（非比例示意）。
+% 编译：xelatex mooring_symbols.tex
+\documentclass[tikz,border=5mm]{standalone}
+\usepackage[UTF8,fontset=fandol]{ctex}
+\usepackage{amsmath,bm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,angles,quotes,positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+  x=0.75cm,y=0.75cm,
+  >=Stealth,
+  font=\small,
+  water/.style={black!70,line width=0.45pt},
+  bed/.style={black,line width=0.55pt},
+  chain/.style={black!85,line width=0.8pt,line cap=round},
+  component/.style={black,line width=5.2pt,line cap=round},
+  pipe/.style={black,line width=1.15pt,line cap=round},
+  joint/.style={circle,fill=black,inner sep=1.25pt},
+  dim/.style={black!75,thin,<->},
+  extension/.style={black!55,densely dashed,thin},
+  reference/.style={black!55,densely dashed,thin},
+  anglemark/.style={draw=black!80,thin,angle radius=0.30cm,angle eccentricity=1.55},
+  labeltxt/.style={font=\small,inner sep=1.2pt,fill=white,fill opacity=0.88,text opacity=1},
+  noticetxt/.style={font=\scriptsize,inner sep=1pt,fill=white,fill opacity=0.88,text opacity=1}
+]
+
+% --------------------------------------------------------------------------
+% 环境与样式：下列命名参数只控制示意图版式，不代表计算工况或比例。
+% --------------------------------------------------------------------------
+\def\SeaY{8.40}
+\def\BedY{0.85}
+\def\AnchorX{3.38}
+\def\BuoyX{11.10}
+\def\BuoyBottomY{7.72}
+
+% --------------------------------------------------------------------------
+% 海面和海床
+% --------------------------------------------------------------------------
+\coordinate (seaLeft) at (0.55,\SeaY);
+\coordinate (seaRight) at (15.70,\SeaY);
+\coordinate (bedLeft) at (0.55,\BedY);
+\coordinate (bedRight) at (15.70,\BedY);
+\draw[water] (seaLeft) -- (seaRight);
+\draw[bed] (bedLeft) -- (bedRight);
+
+% --------------------------------------------------------------------------
+% 锚与锚链：实线链形仅为平滑结构示意，不代表精确悬链线计算结果。
+% --------------------------------------------------------------------------
+\coordinate (anchorSW) at (2.58,\BedY);
+\coordinate (anchorNE) at (3.38,1.37);
+\coordinate (anchorPoint) at (3.38,1.05);
+\coordinate (touchdown) at (5.55,1.05);
+\coordinate (chainControlA) at (7.05,1.12);
+\coordinate (chainControlB) at (8.85,2.18);
+\coordinate (chainJoint) at (10.12,3.83);
+\coordinate (chainLabel) at (7.62,2.62);
+\draw[fill=black!88,draw=black] (anchorSW) rectangle (anchorNE);
+\draw[chain] (anchorPoint) -- (touchdown)
+  .. controls (chainControlA) and (chainControlB) .. (chainJoint);
+
+% --------------------------------------------------------------------------
+% 钢桶和重物球：锚链、钢桶和悬挂支线共用 chainJoint 连接点。
+% --------------------------------------------------------------------------
+\coordinate (bucketLower) at (chainJoint);
+\coordinate (bucketUpper) at (10.54,4.86);
+\coordinate (bucketMid) at ($(bucketLower)!0.5!(bucketUpper)$);
+\coordinate (bucketVertical) at ($(bucketMid)+(0,0.92)$);
+\coordinate (weightTop) at (10.12,3.12);
+\coordinate (weightCenter) at (10.12,2.74);
+\draw[component] (bucketLower) -- (bucketUpper);
+\draw[chain] (chainJoint) -- (weightTop);
+\fill[black] (weightCenter) circle[radius=0.28];
+
+% --------------------------------------------------------------------------
+% 四节钢管：从浮标向钢桶编号 i=1,2,3,4。
+% --------------------------------------------------------------------------
+\coordinate (pipeFourLower) at (bucketUpper);
+\coordinate (jointFourThree) at (10.70,5.62);
+\coordinate (jointThreeTwo) at (10.88,6.36);
+\coordinate (jointTwoOne) at (11.00,7.06);
+\coordinate (pipeOneUpper) at (\BuoyX,\BuoyBottomY);
+\coordinate (pipeOneMid) at ($(jointTwoOne)!0.5!(pipeOneUpper)$);
+\coordinate (pipeTwoMid) at ($(jointThreeTwo)!0.5!(jointTwoOne)$);
+\coordinate (pipeThreeMid) at ($(jointFourThree)!0.5!(jointThreeTwo)$);
+\coordinate (pipeFourMid) at ($(pipeFourLower)!0.5!(jointFourThree)$);
+\coordinate (pipeOneVertical) at ($(pipeOneMid)+(0,0.58)$);
+\coordinate (pipeTwoVertical) at ($(pipeTwoMid)+(0,0.58)$);
+\coordinate (pipeThreeVertical) at ($(pipeThreeMid)+(0,0.58)$);
+\coordinate (pipeFourVertical) at ($(pipeFourMid)+(0,0.58)$);
+\coordinate (thetaOneLabel) at ($(pipeOneMid)+(-0.88,-0.08)$);
+\coordinate (thetaTwoLabel) at ($(pipeTwoMid)+(-0.88,-0.04)$);
+\coordinate (thetaThreeLabel) at ($(pipeThreeMid)+(-0.88,-0.04)$);
+\coordinate (thetaFourLabel) at ($(pipeFourMid)+(-0.88,-0.04)$);
+\draw[pipe] (pipeFourLower) -- (jointFourThree);
+\draw[pipe] (jointFourThree) -- (jointThreeTwo);
+\draw[pipe] (jointThreeTwo) -- (jointTwoOne);
+\draw[pipe] (jointTwoOne) -- (pipeOneUpper);
+\node[joint] at (jointFourThree) {};
+\node[joint] at (jointThreeTwo) {};
+\node[joint] at (jointTwoOne) {};
+
+% --------------------------------------------------------------------------
+% 浮标
+% --------------------------------------------------------------------------
+\coordinate (buoySW) at (10.43,\BuoyBottomY);
+\coordinate (buoyNE) at (11.77,9.55);
+\coordinate (buoyAxisBottom) at (\BuoyX,\BuoyBottomY);
+\coordinate (buoyAxisSea) at (\BuoyX,\SeaY);
+\coordinate (buoyAxisTop) at (\BuoyX,9.55);
+\path[fill=black!12,draw=black,line width=0.65pt,rounded corners=2.5pt]
+  (buoySW) rectangle (buoyNE);
+
+% --------------------------------------------------------------------------
+% 尺寸标注：H、delta、r、L 和 L_0。
+% --------------------------------------------------------------------------
+\coordinate (depthSea) at (1.02,\SeaY);
+\coordinate (depthBed) at (1.02,\BedY);
+\coordinate (depthSeaExt) at (0.55,\SeaY);
+\coordinate (depthBedExt) at (0.55,\BedY);
+\draw[extension] (depthSea) -- (depthSeaExt);
+\draw[extension] (depthBed) -- (depthBedExt);
+\draw[dim] (depthBed) -- (depthSea) node[midway,labeltxt,left] {$H$};
+
+\coordinate (draftSea) at (12.25,\SeaY);
+\coordinate (draftBottom) at (12.25,\BuoyBottomY);
+\coordinate (draftSeaExt) at (11.77,\SeaY);
+\coordinate (draftBottomExt) at (11.77,\BuoyBottomY);
+\draw[extension] (draftSea) -- (draftSeaExt);
+\draw[extension] (draftBottom) -- (draftBottomExt);
+\draw[dim] (draftBottom) -- (draftSea) node[midway,labeltxt,right] {$\delta$};
+
+\coordinate (rangeLeft) at (\AnchorX,0.34);
+\coordinate (rangeRight) at (\BuoyX,0.34);
+\coordinate (rangeLeftExt) at (\AnchorX,\BedY);
+\coordinate (rangeRightExt) at (\BuoyX,\BuoyBottomY);
+\draw[extension] (rangeLeft) -- (rangeLeftExt);
+\draw[extension] (rangeRight) -- (rangeRightExt);
+\draw[dim] (rangeLeft) -- (rangeRight) node[midway,noticetxt,below] {$r$};
+
+\coordinate (bedChainDimLeft) at ($(anchorPoint)+(0,0.47)$);
+\coordinate (bedChainDimRight) at ($(touchdown)+(0,0.47)$);
+\draw[dim] (bedChainDimLeft) -- (bedChainDimRight)
+  node[midway,noticetxt,above] {$L_0$};
+\coordinate (groundedConditionLabel) at (4.52,1.96);
+\node[labeltxt] at (chainLabel) {锚链总弧长 $L$};
+\node[noticetxt] at (groundedConditionLabel)
+  {$L_0>0,\ \varphi_{\mathrm a}=0$};
+
+% --------------------------------------------------------------------------
+% 倾角标注：钢管与钢桶轴线均相对局部竖直参考线定义。
+% --------------------------------------------------------------------------
+\draw[reference] (pipeOneMid) -- (pipeOneVertical);
+\draw[reference] (pipeTwoMid) -- (pipeTwoVertical);
+\draw[reference] (pipeThreeMid) -- (pipeThreeVertical);
+\draw[reference] (pipeFourMid) -- (pipeFourVertical);
+\draw[reference] (bucketMid) -- (bucketVertical);
+\pic[anglemark] {angle=pipeOneUpper--pipeOneMid--pipeOneVertical};
+\pic[anglemark] {angle=jointTwoOne--pipeTwoMid--pipeTwoVertical};
+\pic[anglemark] {angle=jointThreeTwo--pipeThreeMid--pipeThreeVertical};
+\pic[anglemark] {angle=jointFourThree--pipeFourMid--pipeFourVertical};
+\pic[anglemark] {angle=bucketUpper--bucketMid--bucketVertical};
+\node[noticetxt,anchor=west] at (thetaOneLabel) {$\theta_1$};
+\node[noticetxt,anchor=west] at (thetaTwoLabel) {$\theta_2$};
+\node[noticetxt,anchor=west] at (thetaThreeLabel) {$\theta_3$};
+\node[noticetxt,anchor=west] at (thetaFourLabel) {$\theta_4$};
+\node[noticetxt,anchor=south west] at ($(bucketMid)+(0.14,0.26)$) {$\theta_{\mathrm d}$};
+
+% --------------------------------------------------------------------------
+% 构件名称与环境参数
+% --------------------------------------------------------------------------
+\coordinate (windStart) at (3.55,9.18);
+\coordinate (windEnd) at (5.80,9.18);
+\coordinate (currentStart) at (3.70,6.30);
+\coordinate (currentEnd) at (5.75,6.30);
+\coordinate (rhoLabel) at (5.05,5.30);
+\draw[->,black!75,thin] (windStart) -- (windEnd)
+  node[midway,noticetxt,above] {$v_{\mathrm w}$};
+\draw[->,black!75,thin] (currentStart) -- (currentEnd)
+  node[midway,noticetxt,above] {$v_{\mathrm c}$};
+\node[labeltxt] at (rhoLabel) {海水密度 $\rho$};
+\node[labeltxt,anchor=west] at (1.22,8.72) {海面};
+\node[labeltxt,anchor=west] at (12.70,0.85) {海床};
+\node[labeltxt,anchor=east] at ($(anchorSW)+(-0.18,0.28)$) {锚};
+\node[labeltxt,anchor=west] at ($(bucketMid)+(0.58,0.05)$) {钢桶};
+\node[labeltxt,anchor=west] at ($(weightCenter)+(0.48,0.00)$) {重物球 $m_{\mathrm s}$};
+\node[labeltxt,anchor=west] at ($(pipeThreeMid)+(-1.56,0.18)$) {钢管};
+\node[labeltxt,anchor=west] at ($(buoyNE)+(0.14,-0.18)$) {浮标};
+\node[noticetxt,anchor=west] at ($(pipeOneMid)+(0.62,0.20)$) {$i=1$};
+\node[noticetxt,anchor=west] at ($(pipeTwoMid)+(0.62,0.05)$) {$i=2$};
+\node[noticetxt,anchor=west] at ($(pipeThreeMid)+(0.62,-0.08)$) {$i=3$};
+\node[noticetxt,anchor=west] at ($(pipeFourMid)+(0.60,-0.16)$) {$i=4$};
+
+% --------------------------------------------------------------------------
+% 锚端局部插图：仅定义完全离床的 L_0=0, varphi_a>0 情形。
+% --------------------------------------------------------------------------
+\coordinate (insetBedLeft) at (12.78,1.28);
+\coordinate (insetBedRight) at (15.72,1.28);
+\coordinate (insetAnchorSW) at (13.02,1.28);
+\coordinate (insetAnchorNE) at (13.28,1.50);
+\coordinate (insetAnchorPoint) at (13.28,1.43);
+\coordinate (insetHorizontal) at (14.02,1.43);
+\coordinate (insetTangent) at (13.96,1.86);
+\coordinate (insetCurveEnd) at (15.12,2.52);
+\draw[black!65,thin] (insetBedLeft) -- (insetBedRight);
+\draw[fill=black!88,draw=black] (insetAnchorSW) rectangle (insetAnchorNE);
+\draw[chain] (insetAnchorPoint) -- (insetTangent)
+  .. controls (14.28,2.05) and (14.72,2.36) .. (insetCurveEnd);
+\pic[anglemark,"$\varphi_{\mathrm a}$" {noticetxt,anchor=south west}]
+  {angle=insetHorizontal--insetAnchorPoint--insetTangent};
+\node[noticetxt,anchor=west] at (12.78,2.94) {锚端局部状态（完全离床）};
+\node[noticetxt,anchor=west] at (12.78,2.62) {$L_0=0,\ \varphi_{\mathrm a}>0$};
+
+\node[noticetxt] at (7.10,-0.20) {示意图，未按比例绘制};
+\end{tikzpicture}
+\end{document}
