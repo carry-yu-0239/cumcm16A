@@ -11,54 +11,70 @@
   \centering
   \begin{subfigure}[b]{0.30\textwidth}
     \centering
-    \begin{tikzpicture}[scale=0.72, >=Stealth, every node/.style={font=\small}]
-      \draw[fill=gray!10] (-0.9,-1.0) rectangle (0.9,1.0);
-      \draw (-0.9,1.0) arc (180:360:0.9 and 0.18);
-      \draw[dashed] (-0.9,-1.0) arc (180:360:0.9 and 0.18);
-      \draw[->,thick] (0,0) -- (0,1.7) node[right] {$F_{\mathrm b}$};
-      \draw[->,thick] (0,0) -- (1.8,0) node[above] {$F_{\mathrm w}$};
-      \draw[->,thick] (0,0) -- (0,-1.7) node[right] {$G_{\mathrm b}$};
-      \draw[->,thick] (0,-0.9) -- (-1.3,-1.9) node[left] {$T_1$};
-      \draw[dashed] (0,-0.9) -- (0,-2.0);
-      \draw (0,-1.45) arc (-90:-142:0.55) node[midway,below left] {$\theta_1$};
+    \begin{tikzpicture}[scale=0.64, >=Stealth, every node/.style={font=\small}]
+      % 浮标：四个外力均作用于同一等效受力点。
+      \path[fill=gray!12] (-0.9,-1.0) rectangle (0.9,1.0);
+      \draw (-0.9,1.0) arc (180:540:0.9 and 0.18);
+      \draw (-0.9,-1.0) -- (-0.9,1.0) (0.9,-1.0) -- (0.9,1.0);
+      \draw (-0.9,-1.0) arc (180:360:0.9 and 0.18);
+      \draw[dashed] (0.9,-1.0) arc (0:180:0.9 and 0.18);
+      \fill (0,0) circle (1.4pt);
+      \draw[->,thick] (0,0) -- (0,1.75) node[right] {$F_{\mathrm b}$};
+      \draw[->,thick] (0,0) -- (1.85,0) node[above] {$F_{\mathrm w}$};
+      \draw[->,thick] (0,0) -- (0,-1.75) node[right] {$G_{\mathrm b}$};
+      \draw[->,thick] (0,0) -- (-1.35,-2.15) node[left] {$T_1$};
+      \draw (0,0.18) -- (0.18,0.18) -- (0.18,0);
+      \draw (0,-0.58) arc[start angle=-90,end angle=-122,radius=0.58]
+        node[midway,below left] {$\theta_1$};
     \end{tikzpicture}
     \caption{浮标受力}
   \end{subfigure}\hfill
   \begin{subfigure}[b]{0.30\textwidth}
     \centering
-    \begin{tikzpicture}[scale=0.72, >=Stealth, every node/.style={font=\small}]
+    \begin{tikzpicture}[scale=0.64, >=Stealth, every node/.style={font=\small}]
       \coordinate (A) at (0,0);
-      \coordinate (B) at (0.85,2.0);
-      \coordinate (C) at (0.425,1.0);
+      \coordinate (B) at (0.9,1.85);
+      \coordinate (C) at (0.45,0.925);
       \draw[line width=1.2pt] (A) -- (B);
-      \draw[dashed] (B) -- +(0,0.75);
-      \draw[dashed] (A) -- +(0,-0.75);
-      \draw[->,thick] (B) -- +(0.55,0.92) node[right] {$T_i$};
-      \draw[->,thick] (A) -- +(-0.55,-0.92) node[left] {$T_{i+1}$};
-      \draw[->,thick] (C) -- +(0,0.68) node[right] {$F_i$};
-      \draw[->,thick] (C) -- +(0,-0.68) node[right] {$G_i$};
-      \draw (B) +(0,0.46) arc (90:67:0.46) node[midway,right] {$\theta_i$};
-      \draw (A) +(0,-0.46) arc (-90:-113:0.46) node[midway,below] {$\theta_{i+1}$};
+      % 两端张力沿相邻链段方向，重力和浮力作用于钢管几何中点。
+      \draw[dashed] (A) -- +(-0.38,-0.78) (B) -- +(0.38,0.78);
+      \draw[dashed] (A) -- +(0,-0.92) (B) -- +(0,0.92);
+      \fill (A) circle (1.2pt) (B) circle (1.2pt) (C) circle (1.0pt);
+      \draw[->,thick] (B) -- +(0.52,0.93) node[right] {$T_i$};
+      \draw[->,thick] (A) -- +(-0.70,-0.95) node[left] {$T_{i+1}$};
+      \draw[->,thick] (C) -- +(0,0.72) node[right] {$F_i$};
+      \draw[->,thick] (C) -- +(0,-0.72) node[right] {$G_i$};
+      % \theta_i 与正文一致，表示钢管轴线相对铅垂方向的倾角。
+      \draw (C) +(0,-0.48) arc[start angle=-90,end angle=-116,radius=0.48]
+        node[midway,below left] {$\theta_i$};
     \end{tikzpicture}
     \caption{钢管通用受力}
   \end{subfigure}\hfill
   \begin{subfigure}[b]{0.30\textwidth}
     \centering
-    \begin{tikzpicture}[scale=0.72, >=Stealth, every node/.style={font=\small}]
+    \begin{tikzpicture}[scale=0.64, >=Stealth, every node/.style={font=\small}]
       \coordinate (A) at (0,0);
-      \coordinate (B) at (0.85,2.0);
-      \coordinate (C) at (0.425,1.0);
+      \coordinate (B) at (0.9,1.85);
+      \coordinate (C) at (0.45,0.925);
       \draw[line width=1.2pt] (A) -- (B);
-      \draw[fill=gray!15] (A) circle (0.28);
-      \draw (A) -- +(0,-0.88);
-      \fill (0,-0.88) circle (0.20);
-      \draw[->,thick] (B) -- +(0.56,0.95) node[right] {$T_5$};
-      \draw[->,thick] (A) -- +(-0.55,-0.92) node[left] {$T_6$};
-      \draw[->,thick] (C) -- +(0,0.68) node[right] {$F_{\mathrm d}$};
-      \draw[->,thick] (C) -- +(0,-0.68) node[right] {$G_{\mathrm d}$};
-      \draw[->,thick] (0,-1.08) -- +(0,-0.55) node[right] {$G_{\mathrm s}-F_{\mathrm s}$};
-      \node[above left] at (A) {钢桶};
-      \node[below] at (0,-1.24) {重物球};
+      % 钢桶下端通过竖直短绳承受重物球的向下等效载荷。
+      \draw[dashed] (A) -- +(-0.38,-0.78) (B) -- +(0.38,0.78);
+      \draw[dashed] (A) -- +(0,-0.92) (B) -- +(0,0.92);
+      \fill (A) circle (1.2pt) (B) circle (1.2pt) (C) circle (1.0pt);
+      \draw[->,thick] (B) -- +(0.52,0.93) node[right] {$T_5$};
+      \draw[->,thick] (A) -- +(-0.70,-0.95) node[left] {$T_6$};
+      \draw[->,thick] (C) -- +(0,0.72) node[right] {$F_{\mathrm d}$};
+      \draw[->,thick] (C) -- +(0,-0.72) node[right] {$G_{\mathrm d}$};
+      \draw (A) -- +(0,-0.86);
+      \fill[gray!18] (0,-1.12) circle (0.26);
+      \draw (0,-1.12) circle (0.26);
+      \draw[->,thick] (0,-1.38) -- +(0,-0.62)
+        node[right] {$G_{\mathrm s}-F_{\mathrm s}$};
+      % 钢桶倾角采用与式\eqref{eq:q1-rigid-recursion}相同的定义。
+      \draw (C) +(0,-0.48) arc[start angle=-90,end angle=-116,radius=0.48]
+        node[midway,below left] {$\theta_{\mathrm d}$};
+      \node[above left] at (C) {钢桶};
+      \node[left] at (-0.30,-1.12) {重物球};
     \end{tikzpicture}
     \caption{钢桶--重物球单元}
   \end{subfigure}
