@@ -123,27 +123,19 @@
   \label{eq:q1-swing-radius}
 \end{equation}
 
-\subsection{数值求解、脚本与可复现输出}
+\subsection{模型求解}
 
-上述模型由可执行脚本 \texttt{src/q1/q1\_static\_equilibrium.py} 实现。该脚本不改写原始
-数据：先在 \([0.670,0.850]\,\mathrm m\) 内取 \(\delta\)，计算
-\(F_{\mathrm w}\)、四节钢管与钢桶姿态以及锚链状态，再由
-式\eqref{eq:q1-water-depth}计算残差 \(f(\delta)=H(\delta;v)-18\)。对每个风速
-执行 80 次二分迭代，取得 \(f(\delta)=0\) 的数值解；随后按
-式\eqref{eq:q1-swing-radius}计算游动半径。仓库根目录下的运行命令为
-\verb|python src/q1/q1_static_equilibrium.py|。
+对给定风速，先给定浮标吃水深度 \(\delta\)，由浮标受力平衡确定顶部拉力；
+再沿钢管、钢桶和锚链依次递推，得到相应的构件姿态与锚链几何形状。将各段的
+竖直投影代入式\eqref{eq:q1-water-depth}，即可得到水深 \(H\) 关于 \(\delta\)
+的函数关系。令其与实际水深 \(18\,\mathrm m\) 相等，采用二分法求得平衡吃水；
+随后由式\eqref{eq:q1-swing-radius}计算浮标的游动半径。
 
-每次运行均自动写出：吃水--水深曲线及两种风速的锚链坐标到
-\texttt{data/processed/}，最终结果 CSV/\LaTeX{} 表到
-\texttt{outputs/q1/tables/}，图件到 \texttt{outputs/q1/figures/}，并将边界、
-水深残差和锚链长度残差写入 \texttt{outputs/q1/logs/q1\_static\_checks.txt}。
-因此，以下图表均由脚本输出读取生成，而非手工填入。
+上述过程分别在 \(12\,\mathrm{m/s}\) 和 \(24\,\mathrm{m/s}\) 风速下进行。
+图\ref{fig:q1-depth-draft}给出了不同风速下的吃水--水深关系及其与目标水深的交点，
+图\ref{fig:q1-chain-shapes}展示了对应的锚链形状。
 
-\subsection{求解结果与核验}
-
-图\ref{fig:q1-depth-draft}显示 \(H(\delta;v)\) 与目标水深的交点；图
-\ref{fig:q1-chain-shapes}展示同一求解结果下的锚链形状。两图均优先由
-\texttt{paper/figures/} 中的 TikZ 源引入，数据路径保持相对路径。
+\subsection{结果分析}
 
 \begin{figure}[H]
   \centering
@@ -167,8 +159,9 @@
   \input{../outputs/q1/tables/q1_static_results.tex}
 \end{table}
 
-在 \(12\,\mathrm{m/s}\) 下，锚链有 \(6.249\,\mathrm m\) 卧底；在
-\(24\,\mathrm{m/s}\) 下，锚链全长悬空。核验日志给出的两种工况水深残差分别为
-\(7.105\times10^{-15}\,\mathrm m\) 与 \(3.553\times10^{-14}\,\mathrm m\)，锚链
-长度残差均为零，且两解的吃水均在浮标高度范围内。这说明在本节既定的准静态与
-构件密闭假设下，数值闭合满足设定水深和链长约束。
+由表\ref{tab:q1-static-results}可知，风速由 \(12\,\mathrm{m/s}\) 增至
+\(24\,\mathrm{m/s}\) 后，钢桶倾角由 \(1.202^\circ\) 增至 \(4.566^\circ\)，
+浮标游动半径由 \(14.654\,\mathrm m\) 增至 \(17.780\,\mathrm m\)。同时，
+锚链由部分卧底转为全长悬空，锚端夹角由 \(0^\circ\) 增至 \(4.471^\circ\)。
+这是因为风速增大使浮标所受水平风力增大，进而提高了系泊系统的水平张力，
+使各构件和锚链的水平偏移随之增大。
