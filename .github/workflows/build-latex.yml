@@ -33,7 +33,7 @@ jobs:
           os: debian
           latexmk_use_xelatex: true
           latexmk_shell_escape: true
-          extra_system_packages: inkscape
+          extra_system_packages: inkscape fonts-dejavu-core
 
       - name: Upload compiled PDF
         uses: actions/upload-artifact@v7
