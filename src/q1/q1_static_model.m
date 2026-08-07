@@ -64,6 +64,13 @@ for k = 1:numel(wind_speeds)
 end
 writetable(curve_rows, fullfile(processed_dir, 'q1_depth_vs_draft.csv'), 'Encoding', 'UTF-8');
 
+% H(delta)=18 m 的精确求解点单独保存，供图形和结果复核直接引用。
+solution_drafts = cellfun(@(s) s.draft, states)';
+solution_depths = cellfun(@(s) s.model_depth, states)';
+solution_rows = table(wind_speeds(:), solution_drafts, solution_depths, c.depth*ones(numel(wind_speeds), 1), ...
+    'VariableNames', {'wind_speed_mps', 'draft_m', 'model_depth_m', 'target_depth_m'});
+writetable(solution_rows, fullfile(processed_dir, 'q1_depth_draft_solutions.csv'), 'Encoding', 'UTF-8');
+
 % 汇总指标表（CSV 和 LaTeX 同时输出）。
 summary = make_summary_table(states, wind_speeds);
 writetable(summary, fullfile(tables_dir, 'q1_static_results.csv'), 'Encoding', 'UTF-8');
@@ -76,7 +83,7 @@ for k = 1:numel(states)
     writetable(chain_tables{k}, fullfile(processed_dir, sprintf('q1_chain_shape_%dms.csv', wind_speeds(k))), 'Encoding', 'UTF-8');
 end
 
-plot_depth_curve(curve_rows, states, wind_speeds, c, figures_dir);
+plot_depth_curve(curve_rows, solution_rows, wind_speeds, c, figures_dir);
 plot_chain_shapes(chain_tables, wind_speeds, c, figures_dir);
 write_check_log(fullfile(logs_dir, 'q1_static_checks.txt'), states, c);
 
@@ -236,20 +243,37 @@ function coords = chain_coordinates(state, c)
     end
 end
 
-function plot_depth_curve(curve_rows, states, wind_speeds, c, figures_dir)
+function plot_depth_curve(curve_rows, solution_rows, wind_speeds, c, figures_dir)
     fig = figure('Visible', 'off', 'Color', 'w', 'Position', [100, 100, 1320, 840]);
-    ax = axes(fig); set(ax, 'Color', 'w', 'XColor', 'k', 'YColor', 'k', 'GridColor', [0.75 0.75 0.75]);
+    ax = axes(fig); set(ax, 'Color', 'w', 'XColor', 'k', 'YColor', 'k', 'GridColor', [0.75 0.75 0.75], ...
+        'FontName', 'Microsoft YaHei', 'FontSize', 11);
     hold on; grid on; box on;
     colors = [0.12, 0.47, 0.71; 0.77, 0.31, 0.32];
+    h_curve = gobjects(size(wind_speeds));
+    h_solution = gobjects(size(wind_speeds));
     for k = 1:numel(wind_speeds)
         rows = curve_rows.wind_speed_mps == wind_speeds(k);
-        plot(curve_rows.draft_m(rows), curve_rows.model_depth_m(rows), 'LineWidth', 2, 'Color', colors(k,:));
-        plot(states{k}.draft, states{k}.model_depth, 'o', 'MarkerSize', 7, 'MarkerFaceColor', colors(k,:), 'MarkerEdgeColor', colors(k,:));
+        h_curve(k) = plot(curve_rows.draft_m(rows), curve_rows.model_depth_m(rows), ...
+            'LineWidth', 2, 'Color', colors(k,:));
+        h_solution(k) = plot(solution_rows.draft_m(k), solution_rows.model_depth_m(k), 'ko', ...
+            'MarkerSize', 7, 'MarkerFaceColor', 'k', 'MarkerEdgeColor', 'k');
     end
-    yline(c.depth, '--k', 'Target depth = 18 m', 'LineWidth', 1.2);
-    xlabel('Buoy draft \delta (m)'); ylabel('Model water depth H(\delta) (m)');
-    lgd = legend({'wind = 12 m/s', '', 'wind = 24 m/s', ''}, 'Location', 'northwest');
-    set(lgd, 'Color', 'w', 'TextColor', 'k');
+    h_target = yline(c.depth, '--k', 'LineWidth', 1.2);
+    text(solution_rows.draft_m(1)-0.0010, c.depth+0.75, ...
+        sprintf('\\delta_{12}=%.3f m', solution_rows.draft_m(1)), ...
+        'Interpreter', 'tex', 'HorizontalAlignment', 'right', 'VerticalAlignment', 'bottom', ...
+        'BackgroundColor', 'w', 'Margin', 2);
+    text(solution_rows.draft_m(2)+0.0010, c.depth-0.85, ...
+        sprintf('\\delta_{24}=%.3f m', solution_rows.draft_m(2)), ...
+        'Interpreter', 'tex', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', ...
+        'BackgroundColor', 'w', 'Margin', 2);
+    title('不同风速下浮标吃水与模型水深的关系', 'FontName', 'Microsoft YaHei', 'Interpreter', 'none');
+    xlabel('浮标吃水 \delta（m）', 'FontName', 'Microsoft YaHei');
+    ylabel('模型水深 H(\delta)（m）', 'FontName', 'Microsoft YaHei');
+    lgd = legend([h_curve(1), h_curve(2), h_target, h_solution(1), h_solution(2)], ...
+        {'风速 12 m/s', '风速 24 m/s', '目标水深 18 m', '12 m/s 的求解吃水', '24 m/s 的求解吃水'}, ...
+        'Location', 'southeast');
+    set(lgd, 'Color', 'w', 'TextColor', 'k', 'FontName', 'Microsoft YaHei');
     xlim([0.67, 0.85]);
     print(fig, fullfile(figures_dir, 'q1_depth_vs_draft.png'), '-dpng', '-r300');
     print(fig, fullfile(figures_dir, 'q1_depth_vs_draft.pdf'), '-dpdf', '-r300');
@@ -258,19 +282,27 @@ end
 
 function plot_chain_shapes(chain_tables, wind_speeds, c, figures_dir)
     fig = figure('Visible', 'off', 'Color', 'w', 'Position', [100, 100, 1320, 1000]);
-    ax = axes(fig); set(ax, 'Color', 'w', 'XColor', 'k', 'YColor', 'k', 'GridColor', [0.75 0.75 0.75]);
+    ax = axes(fig); set(ax, 'Color', 'w', 'XColor', 'k', 'YColor', 'k', 'GridColor', [0.75 0.75 0.75], ...
+        'FontName', 'Microsoft YaHei', 'FontSize', 11);
     hold on; grid on; box on;
     colors = [0.12, 0.47, 0.71; 0.77, 0.31, 0.32];
+    h_chain = gobjects(size(wind_speeds));
     for k = 1:numel(wind_speeds)
-        plot(chain_tables{k}.x_m, chain_tables{k}.z_m, 'LineWidth', 2.2, 'Color', colors(k,:));
+        h_chain(k) = plot(chain_tables{k}.x_m, chain_tables{k}.z_m, 'LineWidth', 2.2, 'Color', colors(k,:));
     end
-    yline(0, '-', 'Sea surface', 'Color', [0.3, 0.55, 0.75], 'LineWidth', 1.2);
-    yline(-c.depth, '-', 'Seabed', 'Color', [0.55, 0.42, 0.34], 'LineWidth', 1.2);
-    plot(0, -c.depth, 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 6);
-    xlabel('Horizontal coordinate from anchor (m)'); ylabel('Elevation (m)');
-    lgd = legend({'wind = 12 m/s', 'wind = 24 m/s', 'Sea surface', 'Seabed', 'Anchor'}, 'Location', 'best');
-    set(lgd, 'Color', 'w', 'TextColor', 'k');
+    h_surface = yline(0, '-', 'Color', [0.3, 0.55, 0.75], 'LineWidth', 1.2);
+    h_bed = yline(-c.depth, '-', 'Color', [0.55, 0.42, 0.34], 'LineWidth', 1.2);
+    h_anchor = plot(0, -c.depth, 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 6);
+    title('不同风速下锚链的静力平衡形状', 'FontName', 'Microsoft YaHei', 'Interpreter', 'none');
+    xlabel('相对锚点的水平坐标（m）', 'FontName', 'Microsoft YaHei');
+    ylabel('高程（m）', 'FontName', 'Microsoft YaHei');
+    text(0.5, -1.0, '锚点为坐标原点，z 轴向上', 'FontName', 'Microsoft YaHei', ...
+        'BackgroundColor', 'w', 'Margin', 2);
     axis equal;
+    lgd = legend([h_chain(1), h_chain(2), h_surface, h_bed, h_anchor], ...
+        {'风速 12 m/s', '风速 24 m/s', '静水面', '海床（-18 m）', '锚点'}, 'Location', 'none');
+    set(lgd, 'Color', 'w', 'TextColor', 'k', 'FontName', 'Microsoft YaHei', ...
+        'Units', 'normalized', 'Position', [0.14, 0.58, 0.28, 0.26]);
     print(fig, fullfile(figures_dir, 'q1_chain_shapes.png'), '-dpng', '-r300');
     print(fig, fullfile(figures_dir, 'q1_chain_shapes.pdf'), '-dpdf', '-r300');
     close(fig);
