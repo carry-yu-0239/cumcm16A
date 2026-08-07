@@ -1,3 +1,20 @@
 \section{附录}
 
-\todo{待代码和支撑材料完成后，列出可运行程序及其输入输出文件。}
+\subsection{问题一可复现程序与文件清单}
+
+问题一的完整可执行源程序为 \texttt{src/q1/q1\_static\_equilibrium.py}，从仓库根目录
+运行 \verb|python src/q1/q1_static_equilibrium.py| 即可重建本问的中间
+数据、结果表、图件与核验日志。程序仅读取既定参数，不改写 \texttt{data/raw/} 中
+的原始数据。
+
+\begin{itemize}
+  \item 曲线数据：\texttt{data/processed/q1\_depth\_vs\_draft.csv}；
+  \item 链形坐标：\texttt{data/processed/q1\_chain\_shape\_12ms.csv} 和
+    \texttt{data/processed/q1\_chain\_shape\_24ms.csv}；
+  \item 最终结果：\texttt{outputs/q1/tables/q1\_static\_results.csv} 及其
+    \LaTeX{} 对应表；
+  \item 核验记录：\texttt{outputs/q1/logs/q1\_static\_checks.txt}。
+\end{itemize}
+
+完整源程序随论文电子附件提交；正文中的表\ref{tab:q1-static-results}和图
+\ref{fig:q1-depth-draft}--\ref{fig:q1-chain-shapes}均由上述文件生成。

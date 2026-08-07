@@ -5,7 +5,7 @@
 ## 子问题一：静水风载下的刚体—悬链线平衡
 
 - 模型卡：[model_cards/q1.md](../model_cards/q1.md)
-- MATLAB 实现：[src/q1/q1_static_model.m](../src/q1/q1_static_model.m)
+- 可执行实现：[src/q1/q1_static_equilibrium.py](../src/q1/q1_static_equilibrium.py)
 - 最终表格：[outputs/q1/tables/q1_static_results.csv](../outputs/q1/tables/q1_static_results.csv)
 - 曲线与链形：[outputs/q1/figures/](../outputs/q1/figures/)
 - 核验日志：[outputs/q1/logs/q1_static_checks.txt](../outputs/q1/logs/q1_static_checks.txt)

@@ -1,13 +1,13 @@
 % !TEX program = xelatex
 % 问题一：不同风速下的锚链静力形状图。
-% 数据由 src/q1/q1_static_model.m 生成；可从仓库根目录、paper/ 或本目录编译。
+% 数据由 src/q1/q1_static_equilibrium.py 生成；可从仓库根目录、paper/ 或本目录编译。
 % 例如：cd src/q1 && xelatex q1_chain_shapes.tex
 \documentclass[tikz,border=5mm]{standalone}
 \usepackage[UTF8,fontset=fandol]{ctex}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
-% 以相对路径定位 MATLAB 生成的两种风速下的链坐标。
+% 以相对路径定位脚本生成的两种风速下的链坐标。
 \IfFileExists{../../data/processed/q1_chain_shape_12ms.csv}{%
   \def\QOneProcessedDir{../../data/processed}%
 }{%

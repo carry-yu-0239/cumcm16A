@@ -123,12 +123,52 @@
   \label{eq:q1-swing-radius}
 \end{equation}
 
-\subsection{求解步骤}
+\subsection{数值求解、脚本与可复现输出}
 
-以 \(\delta\) 为自变量，将式\eqref{eq:q1-buoyancy}--
-\eqref{eq:q1-buoy-vertical}确定的浮标受力作为起点；再依次使用
-式\eqref{eq:q1-pipe-force-balance}--\eqref{eq:q1-pipe-angle}、
-式\eqref{eq:q1-bucket-horizontal}--\eqref{eq:q1-bucket-moment-lower}和锚链段的
-逐节平衡关系，计算各节的张力与姿态。最后由式\eqref{eq:q1-water-depth}和
-式\eqref{eq:q1-swing-radius}得到海水深度与游动半径随 \(\delta\) 的变化关系，
-并分别在两种给定风速下求解相应的系统状态。
+上述模型由可执行脚本 \texttt{src/q1/q1\_static\_equilibrium.py} 实现。该脚本不改写原始
+数据：先在 \([0.670,0.850]\,\mathrm m\) 内取 \(\delta\)，计算
+\(F_{\mathrm w}\)、四节钢管与钢桶姿态以及锚链状态，再由
+式\eqref{eq:q1-water-depth}计算残差 \(f(\delta)=H(\delta;v)-18\)。对每个风速
+执行 80 次二分迭代，取得 \(f(\delta)=0\) 的数值解；随后按
+式\eqref{eq:q1-swing-radius}计算游动半径。仓库根目录下的运行命令为
+\verb|python src/q1/q1_static_equilibrium.py|。
+
+每次运行均自动写出：吃水--水深曲线及两种风速的锚链坐标到
+\texttt{data/processed/}，最终结果 CSV/\LaTeX{} 表到
+\texttt{outputs/q1/tables/}，图件到 \texttt{outputs/q1/figures/}，并将边界、
+水深残差和锚链长度残差写入 \texttt{outputs/q1/logs/q1\_static\_checks.txt}。
+因此，以下图表均由脚本输出读取生成，而非手工填入。
+
+\subsection{求解结果与核验}
+
+图\ref{fig:q1-depth-draft}显示 \(H(\delta;v)\) 与目标水深的交点；图
+\ref{fig:q1-chain-shapes}展示同一求解结果下的锚链形状。两图均优先由
+\texttt{paper/figures/} 中的 TikZ 源引入，数据路径保持相对路径。
+
+\begin{figure}[H]
+  \centering
+  \includestandalone[mode=tex,width=0.92\linewidth]{figures/q1_depth_vs_draft}
+  \caption{不同风速下浮标吃水与模型水深的关系}
+  \label{fig:q1-depth-draft}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includestandalone[mode=tex,width=0.82\linewidth]{figures/q1_chain_shapes}
+  \caption{不同风速下锚链的静力平衡形状}
+  \label{fig:q1-chain-shapes}
+\end{figure}
+
+\begin{table}[H]
+  \centering
+  \caption{问题一两种风速下的求解结果}
+  \label{tab:q1-static-results}
+  \small
+  \input{../outputs/q1/tables/q1_static_results.tex}
+\end{table}
+
+在 \(12\,\mathrm{m/s}\) 下，锚链有 \(6.249\,\mathrm m\) 卧底；在
+\(24\,\mathrm{m/s}\) 下，锚链全长悬空。核验日志给出的两种工况水深残差分别为
+\(7.105\times10^{-15}\,\mathrm m\) 与 \(3.553\times10^{-14}\,\mathrm m\)，锚链
+长度残差均为零，且两解的吃水均在浮标高度范围内。这说明在本节既定的准静态与
+构件密闭假设下，数值闭合满足设定水深和链长约束。
