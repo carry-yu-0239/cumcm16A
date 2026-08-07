@@ -1,3 +1,224 @@
-\section{问题三：变环境下的系泊系统设计}
+\section{问题三：变环境下的系泊系统响应与参数筛选}
 
-\todo{待团队确认工况覆盖、风流方向、水流分布及设计选择原则后撰写。}
+\subsection{工况、设计变量与计算目标}
+
+问题三在问题一、二的构件尺寸与准静态假设基础上，进一步考虑海水流速、
+水深和风速的联合变化。按题面给出的最大环境荷载，考察
+\(H\in[16,20]~\mathrm m\)、\(v_{\mathrm c}\in[0,1.5]~\mathrm{m/s}\)
+和 \(v_{\mathrm w}\in[0,36]~\mathrm{m/s}\) 的工况。仍以锚链型号、
+链节数和重物球质量作为可调参数，记为
+\begin{equation}
+  \bm\xi=(\kappa,N,m_{\mathrm s})^{\mathsf T},
+  \label{eq:q3-design-variable}
+\end{equation}
+其中 \(\kappa\) 为 I--V 型锚链型号，\(N\) 为链节数。对于给定
+\(H,v_{\mathrm w},v_{\mathrm c},\bm\xi\)，求解钢桶倾角
+\(\theta_{\mathrm d}\)、锚端夹角 \(\varphi_{\mathrm a}\)、吃水深度
+\(\delta\) 与游动半径 \(r\)，并以
+\begin{equation}
+  \theta_{\mathrm d}\leq 5^\circ,
+  \qquad \varphi_{\mathrm a}\leq 16^\circ,
+  \qquad 0<\delta<2~\mathrm m
+  \label{eq:q3-safety-constraints}
+\end{equation}
+作为筛选安全工况的判据。
+
+为分离各环境变量的影响，单因素扫描的工程基准为：水深
+\(18~\mathrm m\)、风速 \(36~\mathrm{m/s}\)、流速
+\(1.5~\mathrm{m/s}\)、II 型锚链 210 节（总长 \(22.05~\mathrm m\)）
+和重物球质量 \(1200~\mathrm{kg}\)。该基准仅用于统一比较，不预设其为
+最终布放方案。
+
+\subsection{风流共同作用下的递推平衡模型}
+
+按建模手稿的单一水平力平衡口径，将风力与水流力投影至同一水平正向。
+浮标吃水为 \(\delta\) 时，浮力、风力和水流力分别为
+\begin{equation}
+  F_{\mathrm b}=\rho g\pi r_{\mathrm b}^2\delta,
+  \qquad
+  F_{\mathrm w}=0.625\,[2(2-\delta)]v_{\mathrm w}^2,
+  \qquad
+  F_{\mathrm{cb}}=374(2\delta)v_{\mathrm c}^2.
+  \label{eq:q3-buoy-loads}
+\end{equation}
+因此浮标下端张力的初始分量为
+\begin{equation}
+  H_1=F_{\mathrm w}+F_{\mathrm{cb}},
+  \qquad
+  V_1=F_{\mathrm b}-G_{\mathrm b}.
+  \label{eq:q3-buoy-tension}
+\end{equation}
+
+对第 \(i\) 个钢管或钢桶刚性圆柱构件，\(\varphi_i\) 表示其轴线与
+竖直方向的夹角，\(H_i,V_i\) 为上端张力的水平、竖直分量。由题面水流力
+公式及构件在垂直水流方向上的投影面积，有
+\begin{equation}
+  F_{\mathrm{c}i}=374D_iL_i\cos\varphi_i\,v_{\mathrm c}^2.
+  \label{eq:q3-member-current-force}
+\end{equation}
+令 \(W_i=G_i-F_i\) 为构件的水中有效重力，则端点平衡与对构件中点的
+力矩平衡写为
+\begin{equation}
+  H_{i+1}=H_i+F_{\mathrm{c}i},
+  \qquad V_{i+1}=V_i-W_i,
+  \qquad
+  \tan\varphi_i=
+  \frac{H_i+F_{\mathrm{c}i}/2}{V_i-W_i/2}.
+  \label{eq:q3-rigid-recursion}
+\end{equation}
+式\eqref{eq:q3-member-current-force}--\eqref{eq:q3-rigid-recursion}
+对四节钢管及钢桶依次求解；其中 \(F_{\mathrm{c}i}\) 含 \(\varphi_i\)，
+故每一节采用二分法求其隐式角度。
+
+重物球仍按实心钢球处理，其直径由式\eqref{eq:ball-volume-diameter}确定。
+重物球的水流投影面积为 \(\pi D_{\mathrm s}^2/4\)，相应集中水平荷载为
+\begin{equation}
+  F_{\mathrm{cs}}=374\frac{\pi D_{\mathrm s}^2}{4}v_{\mathrm c}^2.
+  \label{eq:q3-ball-current-force}
+\end{equation}
+该力与重物球水中有效重力分别并入钢桶下端的水平、竖直张力分量。
+
+锚链按链节离散。对尚未接触海床的第 \(j\) 节，设其与水平的夹角为
+\(\alpha_j\)，链材直径为 \(d_{\mathrm c}\)，则
+\begin{equation}
+  F_{\mathrm{c}j}=374d_{\mathrm c}\ell_\kappa
+  \sin\alpha_j\,v_{\mathrm c}^2,
+  \qquad
+  \tan\alpha_j=
+  \frac{V_j-\omega_\kappa\ell_\kappa/2}
+       {H_j+F_{\mathrm{c}j}/2},
+  \label{eq:q3-chain-recursion}
+\end{equation}
+并递推 \(H_{j+1}=H_j+F_{\mathrm{c}j}\)、
+\(V_{j+1}=V_j-\omega_\kappa\ell_\kappa\)。当竖直分量首次降为零时，
+余链按既有口径平铺于水平海床；由于题面未提供海床摩擦和卧底链阻力参数，
+该段不再叠加水流阻力。最后由
+\begin{equation}
+  H_{\mathrm{cal}}(\delta)=\delta+
+  \sum_{i=1}^{5}L_i\cos\varphi_i+
+  \sum_{j\in\mathcal S}\ell_\kappa\sin\alpha_j=H
+  \label{eq:q3-depth-closure}
+\end{equation}
+闭合水深；\(\mathcal S\) 为悬空链节集合。对 \(H_{\mathrm{cal}}(\delta)-H\)
+在 \(0<\delta<2\) 内二分求根，随后以各段水平投影和卧底链长之和计算 \(r\)。
+
+\subsection{吃水--水深关系与锚链形状}
+
+图\ref{fig:q3-depth-draft}给出基准构型下 \(v_{\mathrm c}=0,0.5,1.0,1.5~\mathrm{m/s}\)
+时的吃水--水深曲线。四条曲线均由逐段平衡计算的离散点连接而成；随流速增大，
+在同一水深处所需吃水增大。这是因为水流荷载提高了系统水平张力，构件和锚链
+的水平偏转增大、竖直投影减小，浮标需提供更大的竖向拉力以闭合目标水深。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.88\linewidth]{../outputs/q3/figures/q3_depth_draft_curve.pdf}
+  \caption{不同水流速度下浮标吃水与海水深度的关系（\(v_{\mathrm w}=36~\mathrm{m/s}\)，II 型 210 节，\(m_{\mathrm s}=1200~\mathrm{kg}\)）}
+  \label{fig:q3-depth-draft}
+\end{figure}
+
+在相同风流和构型下，图\ref{fig:q3-chain-shapes}展示了 \(H=16~\mathrm m\)
+与 \(H=20~\mathrm m\) 两端水深的锚链形状。两种工况下锚链均全长悬空；
+水深由 \(16~\mathrm m\) 增至 \(20~\mathrm m\) 时，锚端夹角由
+\(20.430^\circ\) 增至 \(34.436^\circ\)，游动半径则由 \(20.593~\mathrm m\)
+减至 \(17.820~\mathrm m\)。因此，仅以游动半径缩小不能判断布放更安全，
+还必须同时检验锚端夹角约束。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.96\linewidth]{../outputs/q3/figures/q3_chain_shapes_depth_16_20.pdf}
+  \caption{水深 16 m 与 20 m 时的锚链静力平衡形状（\(v_{\mathrm w}=36~\mathrm{m/s}\)，\(v_{\mathrm c}=1.5~\mathrm{m/s}\)，II 型 210 节，\(m_{\mathrm s}=1200~\mathrm{kg}\)）}
+  \label{fig:q3-chain-shapes}
+\end{figure}
+
+\subsection{参数扫描结果}
+
+首先在静水、\(H=18~\mathrm m\)、\(v_{\mathrm w}=36~\mathrm{m/s}\) 条件下，
+令五种锚链均取 210 节，结果如表\ref{tab:q3-static-chain}。链型越重、总长越大，
+锚端夹角越容易降至零，但游动半径随之增大。五种链型下钢桶倾角均超过
+\(5^\circ\)，说明单独更换锚链不能使原 \(1200~\mathrm{kg}\) 配重满足全部约束。
+
+\begin{table}[H]
+  \centering
+  \caption{静水条件下锚链型号与系统参数的关系（\(H=18~\mathrm m\)，\(v_{\mathrm w}=36~\mathrm{m/s}\)，\(N=210\)，\(m_{\mathrm s}=1200~\mathrm{kg}\)）}
+  \label{tab:q3-static-chain}
+  \scriptsize
+  \input{../outputs/q3/tables/q3_static_chain_model_relation.tex}
+\end{table}
+
+表\ref{tab:q3-current-chain}进一步给出流速与锚链型号的联合影响。对于 I 型
+和 II 型锚链，锚端夹角始终超过 \(16^\circ\)；III 型在
+\(v_{\mathrm c}=1.5~\mathrm{m/s}\) 时的锚端夹角为 \(14.159^\circ\)，
+但钢桶倾角仍为 \(14.231^\circ\)。IV、V 型能够保持锚链部分卧底，
+却仍不能解决钢桶倾角超限。因此，风流极端工况下必须对锚链与配重进行联合设计。
+
+\begin{table}[H]
+  \centering
+  \caption{水流速度与锚链型号对系统参数的联合影响（\(H=18~\mathrm m\)，\(v_{\mathrm w}=36~\mathrm{m/s}\)，\(N=210\)，\(m_{\mathrm s}=1200~\mathrm{kg}\)）}
+  \label{tab:q3-current-chain}
+  \scriptsize
+  \input{../outputs/q3/tables/q3_current_speed_chain_model_relation.tex}
+\end{table}
+
+在工程基准下改变 II 型锚链节数，表\ref{tab:q3-link-count}表明：增加链长可
+使锚端夹角从 \(35.540^\circ\) 降至 \(20.814^\circ\)，但钢桶倾角和游动半径
+分别上升。因而链节数不能仅按锚端约束单独增大。
+
+\begin{table}[H]
+  \centering
+  \caption{不同链节数对系统参数的影响（II 型锚链，工程基准）}
+  \label{tab:q3-link-count}
+  \small
+  \input{../outputs/q3/tables/q3_link_count_effect.tex}
+\end{table}
+
+风速和流速的单因素扫描分别见表\ref{tab:q3-wind-effect}与
+表\ref{tab:q3-current-effect}。风速由 \(12\) 增至 \(36~\mathrm{m/s}\) 时，
+钢桶倾角从 \(7.873^\circ\) 增至 \(14.508^\circ\)，锚端夹角从
+\(21.146^\circ\) 增至 \(27.135^\circ\)；流速由 \(0\) 增至
+\(1.5~\mathrm{m/s}\) 时，这两个角度亦分别增加至 \(14.508^\circ\) 和
+\(27.135^\circ\)。两类水平环境荷载均不可忽略。
+
+\begin{table}[H]
+  \centering
+  \caption{不同风速对系统参数的影响（\(v_{\mathrm c}=1.5~\mathrm{m/s}\)，II 型 210 节，\(m_{\mathrm s}=1200~\mathrm{kg}\)）}
+  \label{tab:q3-wind-effect}
+  \small
+  \input{../outputs/q3/tables/q3_wind_speed_effect.tex}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{不同水流速度对系统参数的影响（\(v_{\mathrm w}=36~\mathrm{m/s}\)，II 型 210 节，\(m_{\mathrm s}=1200~\mathrm{kg}\)）}
+  \label{tab:q3-current-effect}
+  \small
+  \input{../outputs/q3/tables/q3_current_speed_effect.tex}
+\end{table}
+
+最后，表\ref{tab:q3-mass-effect}和表\ref{tab:q3-depth-effect}分别给出配重与
+水深的影响。在工程基准中，即使将配重从 \(1200~\mathrm{kg}\) 增加至
+\(3000~\mathrm{kg}\)，钢桶倾角仍为 \(7.065^\circ\)、锚端夹角仍为
+\(25.537^\circ\)，表明不能把问题三简化为仅增加配重。水深增加虽使钢桶
+倾角略有下降，却使锚端夹角显著增加；在 \(20~\mathrm m\) 时后者达到
+\(34.436^\circ\)。这些扫描结果共同界定了原 II 型 210 节、
+\(1200~\mathrm{kg}\) 配重在最大风流环境下的失效边界，并为后续联合优化
+\((\kappa,N,m_{\mathrm s})\) 提供了可复现的响应数据。
+
+\begin{table}[H]
+  \centering
+  \caption{重物球质量对系统参数的影响（工程基准，II 型 210 节）}
+  \label{tab:q3-mass-effect}
+  \small
+  \input{../outputs/q3/tables/q3_ball_mass_effect.tex}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{海水深度对系统参数的影响（\(v_{\mathrm w}=36~\mathrm{m/s}\)，\(v_{\mathrm c}=1.5~\mathrm{m/s}\)，II 型 210 节，\(m_{\mathrm s}=1200~\mathrm{kg}\)）}
+  \label{tab:q3-depth-effect}
+  \small
+  \input{../outputs/q3/tables/q3_depth_effect.tex}
+\end{table}
+
+上述计算给出了固定初始构型在全工况范围内的响应与约束边界。模型未将题面未给出的
+海床摩擦、卧底链流阻和垂向流速剪切纳入计算，故表中数值用于参数筛选与比较，不能替代
+包含这些现场参数后的最终工程定型。
