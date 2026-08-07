@@ -1,0 +1,29 @@
+
+[原 1200 kg 方案]
+m_s = 1200.000000 kg
+theta_1 = 9.150904 deg
+theta_2 = 9.205925 deg
+theta_3 = 9.261604 deg
+theta_4 = 9.317956 deg
+theta_d = 9.445775 deg
+phi_a = 20.887348 deg
+delta = 0.719773 m
+r = 18.871992 m
+depth_residual = 1.421e-14 m
+chain_regime = fully_suspended
+
+理论临界质量 = 2219.449683 kg
+10 kg 步长最小可行质量 = 2220 kg
+
+[最终 2250 kg 方案]
+m_s = 2250.000000 kg
+theta_1 = 4.341265 deg
+theta_2 = 4.357073 deg
+theta_3 = 4.372997 deg
+theta_4 = 4.389036 deg
+theta_d = 4.425140 deg
+phi_a = 15.825958 deg
+delta = 0.992846 m
+r = 18.531480 m
+depth_residual = 3.553e-15 m
+chain_regime = fully_suspended
