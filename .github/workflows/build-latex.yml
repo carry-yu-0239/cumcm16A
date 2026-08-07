@@ -32,6 +32,8 @@ jobs:
           texlive_version: 2026
           os: debian
           latexmk_use_xelatex: true
+          latexmk_shell_escape: true
+          extra_system_packages: inkscape
 
       - name: Upload compiled PDF
         uses: actions/upload-artifact@v7
