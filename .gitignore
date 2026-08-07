@@ -1,0 +1,10 @@
+# LaTeX build artifacts generated in the paper root
+paper/main.aux
+paper/main.fdb_latexmk
+paper/main.fls
+paper/main.log
+paper/main.out
+paper/main.xdv
+paper/main.pdf
+paper/main.toc
+paper/main.synctex.gz

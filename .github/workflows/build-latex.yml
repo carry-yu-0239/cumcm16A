@@ -34,6 +34,7 @@ jobs:
           latexmk_use_xelatex: true
           latexmk_shell_escape: true
           extra_system_packages: inkscape fonts-dejavu-core
+          args: -gg -file-line-error -halt-on-error -interaction=nonstopmode
 
       - name: Upload compiled PDF
         uses: actions/upload-artifact@v7
