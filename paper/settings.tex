@@ -14,6 +14,11 @@
 \usetikzlibrary{arrows.meta,positioning}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+
+% Q1 TikZ 图在通过 includestandalone[mode=tex] 纳入主文档时使用的相对数据路径。
+% 主文档由 paper/ 作为工作目录编译，因此数据与结果目录位于上一级。
+\newcommand{\QOneProcessedDir}{../data/processed}
+\newcommand{\QOneResultsDir}{../outputs/q1/tables}
 \usepackage{siunitx}
 \sisetup{detect-all}
 
