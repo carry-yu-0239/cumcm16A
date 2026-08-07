@@ -1,111 +1,103 @@
 \section{附录}
 
-\subsection{支撑材料与复现环境}
+\subsection{支撑材料文件列表}
 
-最终提交文件统一存放于 \path{./exports}。本次不生成论文 PDF；最终 PDF 文件名约定为
-\path{第2次第66组.pdf}，支撑材料存放于 \path{./exports/支撑材料}。
+支撑材料文件夹：exports/支撑材料。
 
-\path{exports/支撑材料/复现环境} 是不依赖本仓库其他目录的独立程序副本。副本中的程序内容与
-仓库 \path{src} 中的对应源程序一致，仅将文件名改为中文，并保留了程序所需的相对目录层级。
-从复现环境根目录运行下列命令即可重新生成相应的处理中间数据、结果表、图件和核验日志；程序
-运行时会在该复现环境内部创建 \path{data/processed} 与 \path{outputs}，不读取或改写赛题原始数据。
+\subsubsection{可运行源程序}
+
+文件夹：exports/支撑材料/复现环境/src/q1。
 
 \begin{itemize}
-  \item 问题一 Python 程序：\verb|python src/q1/问题一_静水风载系泊系统求解器.py|；
-  \item 问题一 MATLAB 程序：\verb|matlab -batch "run('src/q1/问题一_静力模型.m')"|；
-  \item 问题二完整 MATLAB 程序：\verb|matlab -batch "run('src/q2/问题二_完整程序.m')"|；
-  \item 问题二静力模型程序：\verb|matlab -batch "run('src/q2/问题二_静力模型.m')"|；
-  \item 问题三 Python 程序：\verb|python src/q3/问题三_风流荷载工程计算.py|（需要 Matplotlib）。
+  \item 问题一\_静水风载系泊系统求解器.py：问题一 Python 静力求解、数据生成和结果输出。
+  \item 问题一\_静力模型.m：问题一 MATLAB 静力模型计算程序。
 \end{itemize}
 
-MATLAB 程序按源程序注释使用 MATLAB R2025b；Python 问题一程序只使用标准库，问题三程序使用
-标准库和 Matplotlib。程序、数据、输出图表、结果表与核验日志之间通过问题编号和中文文件名对应。
-
-\subsection{可运行源程序清单}
+文件夹：exports/支撑材料/复现环境/src/q2。
 
 \begin{itemize}
-  \item \path{exports/支撑材料/复现环境/src/q1/问题一_静水风载系泊系统求解器.py}；
-  \item \path{exports/支撑材料/复现环境/src/q1/问题一_静力模型.m}；
-  \item \path{exports/支撑材料/复现环境/src/q2/问题二_完整程序.m}；
-  \item \path{exports/支撑材料/复现环境/src/q2/问题二_静力模型.m}；
-  \item \path{exports/支撑材料/复现环境/src/q3/问题三_风流荷载工程计算.py}。
+  \item 问题二\_完整程序.m：问题二配重搜索、结果计算和图表输出。
+  \item 问题二\_静力模型.m：问题二静力模型计算程序。
 \end{itemize}
 
-\subsection{处理后数据清单}
-
-以下文件是模型计算产生的中间数据或参数扫描数据；赛题提供的原始数据未复制到支撑材料中。
+文件夹：exports/支撑材料/复现环境/src/q3。
 
 \begin{itemize}
-  \item \path{exports/支撑材料/处理后数据/问题一_锚链形坐标_12米每秒.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题一_锚链形坐标_24米每秒.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题一_吃水解方程.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题一_水深与吃水曲线数据.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题二_锚链坐标_1200千克.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题二_锚链坐标_2250千克.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题二_配重质量扫描.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题三_锚链形状_16米.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题三_锚链形状_20米.csv}；
-  \item \path{exports/支撑材料/处理后数据/问题三_水深与吃水曲线数据.csv}。
+  \item 问题三\_风流荷载工程计算.py：问题三风流荷载计算、参数分析和结果输出。
 \end{itemize}
 
-\subsection{结果图表清单}
+\subsubsection{处理后数据}
+
+文件夹：exports/支撑材料/处理后数据。
 
 \begin{itemize}
-  \item 问题一：\path{exports/支撑材料/结果图表/问题一/问题一_锚链形状.pdf}、
-    \path{exports/支撑材料/结果图表/问题一/问题一_锚链形状.png}、
-    \path{exports/支撑材料/结果图表/问题一/问题一_锚链形状.svg}、
-    \path{exports/支撑材料/结果图表/问题一/问题一_锚链形状.tex}；
-    \path{exports/支撑材料/结果图表/问题一/问题一_水深与吃水曲线.pdf}、
-    \path{exports/支撑材料/结果图表/问题一/问题一_水深与吃水曲线.png}、
-    \path{exports/支撑材料/结果图表/问题一/问题一_水深与吃水曲线.svg}、
-    \path{exports/支撑材料/结果图表/问题一/问题一_水深与吃水曲线.tex}；
-  \item 问题二：\path{exports/支撑材料/结果图表/问题二/问题二_锚链形状对比.pdf}、
-    \path{exports/支撑材料/结果图表/问题二/问题二_锚链形状对比.png}、
-    \path{exports/支撑材料/结果图表/问题二/问题二_配重约束关系.pdf}、
-    \path{exports/支撑材料/结果图表/问题二/问题二_配重约束关系.png}；
-  \item 问题三：\path{exports/支撑材料/结果图表/问题三/问题三_16米与20米锚链形状.pdf}、
-    \path{exports/支撑材料/结果图表/问题三/问题三_16米与20米锚链形状.png}、
-    \path{exports/支撑材料/结果图表/问题三/问题三_16米与20米锚链形状.svg}、
-    \path{exports/支撑材料/结果图表/问题三/问题三_水深与吃水曲线.pdf}、
-    \path{exports/支撑材料/结果图表/问题三/问题三_水深与吃水曲线.png}、
-    \path{exports/支撑材料/结果图表/问题三/问题三_水深与吃水曲线.svg}。
+  \item 问题一\_锚链形坐标\_12米每秒.csv、问题一\_锚链形坐标\_24米每秒.csv：问题一两种风速下的锚链坐标。
+  \item 问题一\_吃水解方程.csv、问题一\_水深与吃水曲线数据.csv：问题一吃水求解和曲线数据。
+  \item 问题二\_锚链坐标\_1200千克.csv、问题二\_锚链坐标\_2250千克.csv：问题二两种配重方案的锚链坐标。
+  \item 问题二\_配重质量扫描.csv：问题二配重质量扫描数据。
+  \item 问题三\_锚链形状\_16米.csv、问题三\_锚链形状\_20米.csv：问题三不同水深下的锚链形状数据。
+  \item 问题三\_水深与吃水曲线数据.csv：问题三水深与吃水曲线数据。
 \end{itemize}
 
-\subsection{结果表与核验日志清单}
+\subsubsection{结果图表}
+
+文件夹：exports/支撑材料/结果图表/问题一。
 
 \begin{itemize}
-  \item 问题一：\path{exports/支撑材料/结果表与日志/问题一/问题一_静力结果表.csv}、
-    \path{exports/支撑材料/结果表与日志/问题一/问题一_静力结果表.tex}、
-    \path{exports/支撑材料/结果表与日志/问题一/问题一_静力核验日志.txt}；
-  \item 问题二：\path{exports/支撑材料/结果表与日志/问题二/问题二_配重扫描.csv}、
-    \path{exports/支撑材料/结果表与日志/问题二/问题二_配重扫描.tex}、
-    \path{exports/支撑材料/结果表与日志/问题二/问题二_静力结果表.csv}、
-    \path{exports/支撑材料/结果表与日志/问题二/问题二_静力结果表.tex}、
-    \path{exports/支撑材料/结果表与日志/问题二/问题二_静力核验日志.txt}、
-    \path{exports/支撑材料/结果表与日志/问题二/问题二_结果摘要.txt}；
-  \item 问题三：\path{exports/支撑材料/结果表与日志/问题三/问题三_重物球质量影响.csv}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_重物球质量影响.tex}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_流速与锚链模型关系.csv}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_流速与锚链模型关系.tex}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_流速影响.csv}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_流速影响.tex}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_水深影响.csv}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_水深影响.tex}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_链节数影响.csv}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_链节数影响.tex}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_静力链模型关系.csv}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_静力链模型关系.tex}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_风速影响.csv}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_风速影响.tex}、
-    \path{exports/支撑材料/结果表与日志/问题三/问题三_工程核验日志.txt}。
+  \item 问题一\_锚链形状.pdf、问题一\_锚链形状.png、问题一\_锚链形状.svg、问题一\_锚链形状.tex：问题一锚链形状图及其绘图源文件。
+  \item 问题一\_水深与吃水曲线.pdf、问题一\_水深与吃水曲线.png、问题一\_水深与吃水曲线.svg、问题一\_水深与吃水曲线.tex：问题一水深与吃水曲线图及其绘图源文件。
 \end{itemize}
 
-\subsection{模型说明材料}
+文件夹：exports/支撑材料/结果图表/问题二。
 
 \begin{itemize}
-  \item \path{exports/支撑材料/模型说明/问题一_模型卡.md}；
-  \item \path{exports/支撑材料/模型说明/问题一_数据说明.md}。
+  \item 问题二\_锚链形状对比.pdf、问题二\_锚链形状对比.png：问题二配重方案锚链形状对比图。
+  \item 问题二\_配重约束关系.pdf、问题二\_配重约束关系.png：问题二配重质量与约束角度关系图。
 \end{itemize}
 
-上述文件均为支撑模型、结果和结论所需的程序、处理中间数据、图表、结果表、核验日志或模型
-说明材料；未复制赛题提供的原始数据，也未另行使用未列入清单的外部数据资料。
+文件夹：exports/支撑材料/结果图表/问题三。
+
+\begin{itemize}
+  \item 问题三\_16米与20米锚链形状.pdf、问题三\_16米与20米锚链形状.png、问题三\_16米与20米锚链形状.svg：问题三不同水深下的锚链形状图。
+  \item 问题三\_水深与吃水曲线.pdf、问题三\_水深与吃水曲线.png、问题三\_水深与吃水曲线.svg：问题三水深与吃水曲线图。
+\end{itemize}
+
+\subsubsection{结果表与核验日志}
+
+文件夹：exports/支撑材料/结果表与日志/问题一。
+
+\begin{itemize}
+  \item 问题一\_静力结果表.csv、问题一\_静力结果表.tex：问题一静力结果数据及论文表格源文件。
+  \item 问题一\_静力核验日志.txt：问题一计算核验记录。
+\end{itemize}
+
+文件夹：exports/支撑材料/结果表与日志/问题二。
+
+\begin{itemize}
+  \item 问题二\_配重扫描.csv、问题二\_配重扫描.tex：问题二配重扫描数据及表格源文件。
+  \item 问题二\_静力结果表.csv、问题二\_静力结果表.tex：问题二静力结果数据及论文表格源文件。
+  \item 问题二\_静力核验日志.txt：问题二计算核验记录。
+  \item 问题二\_结果摘要.txt：问题二主要计算结果摘要。
+\end{itemize}
+
+文件夹：exports/支撑材料/结果表与日志/问题三。
+
+\begin{itemize}
+  \item 问题三\_重物球质量影响.csv、问题三\_重物球质量影响.tex：重物球质量影响数据及表格源文件。
+  \item 问题三\_流速与锚链模型关系.csv、问题三\_流速与锚链模型关系.tex：流速与锚链模型关系数据及表格源文件。
+  \item 问题三\_流速影响.csv、问题三\_流速影响.tex：流速影响数据及表格源文件。
+  \item 问题三\_水深影响.csv、问题三\_水深影响.tex：水深影响数据及表格源文件。
+  \item 问题三\_链节数影响.csv、问题三\_链节数影响.tex：链节数影响数据及表格源文件。
+  \item 问题三\_静力链模型关系.csv、问题三\_静力链模型关系.tex：静力链模型关系数据及表格源文件。
+  \item 问题三\_风速影响.csv、问题三\_风速影响.tex：风速影响数据及表格源文件。
+  \item 问题三\_工程核验日志.txt：问题三计算核验记录。
+\end{itemize}
+
+\subsubsection{模型说明材料}
+
+文件夹：exports/支撑材料/模型说明。
+
+\begin{itemize}
+  \item 问题一\_模型卡.md：问题一模型定义、参数和计算口径说明。
+  \item 问题一\_数据说明.md：问题一数据处理说明。
+\end{itemize}
