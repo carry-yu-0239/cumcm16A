@@ -1,0 +1,9 @@
+parameter,value,unit
+sea_water_density,1025.000000000,kg/m^3
+gravity,9.800000000,m/s^2
+II_chain_total_length,22.050000000,m
+II_chain_mass_per_length,7.000000000,kg/m
+pipe_effective_weight,78.276688622,N
+barrel_effective_weight,269.960790381,N
+ball_effective_weight,10224.458598726,N
+chain_effective_weight_per_length,59.642675159,N/m

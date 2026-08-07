@@ -1,0 +1,13 @@
+Q1 static equilibrium run
+Target water depth: 18.000000 m
+Pipe buoyancy condition: fully displacing outer cylinder, radius 0.025 m
+
+Wind 12 m/s
+draft=0.682882677672, H=18.000000000000, residual=7.105e-15
+chain_mode=partly_grounded, suspended_length=15.800869971396, bed_length=6.249130028604
+arc_length_residual=0.000e+00
+
+Wind 24 m/s
+draft=0.697017882130, H=18.000000000000, residual=3.908e-14
+chain_mode=fully_suspended, suspended_length=22.050000000000, bed_length=0.000000000000
+arc_length_residual=0.000e+00
