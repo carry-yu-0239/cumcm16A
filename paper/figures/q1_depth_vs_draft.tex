@@ -1,0 +1,87 @@
+% !TEX program = xelatex
+% 问题一：浮标吃水与模型水深关系图。
+% 数据由 src/q1/q1_static_model.m 生成；可从仓库根目录、paper/ 或本目录编译。
+% 例如：cd src/q1 && xelatex q1_depth_vs_draft.tex
+\documentclass[tikz,border=5mm]{standalone}
+\usepackage[UTF8,fontset=fandol]{ctex}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% 以相对路径定位 MATLAB 生成的数据，兼容从 src/q1、paper 或仓库根目录编译。
+\IfFileExists{../../data/processed/q1_depth_vs_draft.csv}{%
+  \def\QOneProcessedDir{../../data/processed}%
+  \def\QOneResultsDir{../../outputs/q1/tables}%
+}{%
+  \IfFileExists{../data/processed/q1_depth_vs_draft.csv}{%
+    \def\QOneProcessedDir{../data/processed}%
+    \def\QOneResultsDir{../outputs/q1/tables}%
+  }{%
+    \def\QOneProcessedDir{data/processed}%
+    \def\QOneResultsDir{outputs/q1/tables}%
+  }%
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  width=14cm,
+  height=9cm,
+  title={不同风速下浮标吃水与模型水深的关系},
+  xlabel={浮标吃水 $\delta$（m）},
+  ylabel={模型水深 $H(\delta)$（m）},
+  xmin=0.67, xmax=0.85,
+  ymin=6, ymax=30,
+  xtick={0.67,0.70,0.73,0.76,0.79,0.82,0.85},
+  ytick={6,10,14,18,22,26,30},
+  grid=major,
+  grid style={gray!25},
+  axis line style={black!70},
+  tick style={black!70},
+  legend style={
+    at={(0.98,0.04)}, anchor=south east,
+    draw=black!35, fill=white, fill opacity=0.94, text opacity=1,
+    font=\scriptsize
+  },
+  legend cell align={left},
+  every axis plot/.append style={line cap=round}
+]
+  \addplot+[very thick, blue!70!black, no marks,
+    restrict expr to domain={\thisrow{wind_speed_mps}}{12:12}]
+    table [x=draft_m, y=model_depth_m, col sep=comma]
+    {\QOneProcessedDir/q1_depth_vs_draft.csv};
+  \addlegendentry{风速 $12\,\mathrm{m/s}$}
+
+  \addplot+[very thick, red!70!black, no marks,
+    restrict expr to domain={\thisrow{wind_speed_mps}}{24:24}]
+    table [x=draft_m, y=model_depth_m, col sep=comma]
+    {\QOneProcessedDir/q1_depth_vs_draft.csv};
+  \addlegendentry{风速 $24\,\mathrm{m/s}$}
+
+  % 从 MATLAB 结果表读取精确交点；曲线 CSV 仅是 0.001 m 步长的离散取样。
+  \addplot+[only marks, mark=*, mark size=2.0pt, black,
+    restrict expr to domain={\thisrow{wind_speed_mps}}{12:12},
+    visualization depends on={value \thisrow{buoy_draft_m}\as\draftvalue},
+    nodes near coords={$\delta_{12}=\pgfmathprintnumber[fixed,precision=3]{\draftvalue}\,\mathrm{m}$},
+    every node near coord/.append style={font=\scriptsize, anchor=south east, xshift=-2pt, yshift=3pt,
+      fill=white, fill opacity=0.92, text opacity=1, inner sep=1pt}]
+    table [x=buoy_draft_m, y expr=18, col sep=comma]
+    {\QOneResultsDir/q1_static_results.csv};
+  \addlegendentry{$12\,\mathrm{m/s}$ 的求解吃水}
+
+  \addplot+[only marks, mark=*, mark size=2.0pt, black,
+    restrict expr to domain={\thisrow{wind_speed_mps}}{24:24},
+    visualization depends on={value \thisrow{buoy_draft_m}\as\draftvalue},
+    nodes near coords={$\delta_{24}=\pgfmathprintnumber[fixed,precision=3]{\draftvalue}\,\mathrm{m}$},
+    every node near coord/.append style={font=\scriptsize, anchor=north west, xshift=2pt, yshift=-3pt,
+      fill=white, fill opacity=0.92, text opacity=1, inner sep=1pt}]
+    table [x=buoy_draft_m, y expr=18, col sep=comma]
+    {\QOneResultsDir/q1_static_results.csv};
+  \addlegendentry{$24\,\mathrm{m/s}$ 的求解吃水}
+
+  \addplot+[black!70, dashed, line width=1pt, domain=0.67:0.85, samples=2] {18};
+  \addlegendentry{目标水深 $18\,\mathrm{m}$}
+
+\end{axis}
+\end{tikzpicture}
+\end{document}

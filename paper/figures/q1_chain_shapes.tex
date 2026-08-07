@@ -1,0 +1,71 @@
+% !TEX program = xelatex
+% 问题一：不同风速下的锚链静力形状图。
+% 数据由 src/q1/q1_static_model.m 生成；可从仓库根目录、paper/ 或本目录编译。
+% 例如：cd src/q1 && xelatex q1_chain_shapes.tex
+\documentclass[tikz,border=5mm]{standalone}
+\usepackage[UTF8,fontset=fandol]{ctex}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% 以相对路径定位 MATLAB 生成的两种风速下的链坐标。
+\IfFileExists{../../data/processed/q1_chain_shape_12ms.csv}{%
+  \def\QOneProcessedDir{../../data/processed}%
+}{%
+  \IfFileExists{../data/processed/q1_chain_shape_12ms.csv}{%
+    \def\QOneProcessedDir{../data/processed}%
+  }{%
+    \def\QOneProcessedDir{data/processed}%
+  }%
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  width=14cm,
+  height=12.6cm,
+  title={不同风速下锚链的静力平衡形状},
+  xlabel={相对锚点的水平坐标（m）},
+  ylabel={高程（m）},
+  xmin=-0.8, xmax=18.8,
+  ymin=-18.8, ymax=1.2,
+  xtick={0,3,6,9,12,15,18},
+  ytick={-18,-15,-12,-9,-6,-3,0},
+  grid=major,
+  grid style={gray!25},
+  axis line style={black!70},
+  tick style={black!70},
+  legend style={
+    at={(axis cs:1.2,-2.2)}, anchor=north west,
+    draw=black!35, fill=white, fill opacity=0.94, text opacity=1,
+    font=\scriptsize
+  },
+  legend cell align={left},
+  axis equal image,
+  every axis plot/.append style={line cap=round}
+]
+  \addplot+[very thick, blue!70!black, no marks]
+    table [x=x_m, y=z_m, col sep=comma]
+    {\QOneProcessedDir/q1_chain_shape_12ms.csv};
+  \addlegendentry{风速 $12\,\mathrm{m/s}$}
+
+  \addplot+[very thick, red!70!black, no marks]
+    table [x=x_m, y=z_m, col sep=comma]
+    {\QOneProcessedDir/q1_chain_shape_24ms.csv};
+  \addlegendentry{风速 $24\,\mathrm{m/s}$}
+
+  \addplot+[blue!55!black, line width=0.9pt, domain=-0.8:18.8, samples=2] {0};
+  \addlegendentry{静水面}
+
+  \addplot+[brown!70!black, line width=0.9pt, domain=-0.8:18.8, samples=2] {-18};
+  \addlegendentry{海床（$-18\,\mathrm{m}$）}
+
+  \addplot+[only marks, mark=*, mark size=2.2pt, black]
+    coordinates {(0,-18)};
+  \addlegendentry{锚点}
+
+  \node[font=\scriptsize, fill=white, fill opacity=0.9, text opacity=1,
+        inner sep=1.3pt, anchor=west]
+    at (axis cs:0.45,-1.0) {锚点为坐标原点，$z$ 轴向上};
+\end{axis}
+\end{tikzpicture}
+\end{document}

@@ -15,3 +15,5 @@
 13. 输出图片使用适合论文的尺寸与分辨率。
 14. 中文图片必须避免乱码。
 15. 写入论文的所有数值必须来自 outputs 目录。
+16. `paper/sections/` 中引用的任何外部图片或 TikZ 图源必须实际存在于 `paper/figures/`；不得直接引用 `outputs/` 中的图片文件。若图源来自 `outputs/`，须先在 `paper/figures/` 创建内容等效的副本，再由正文引用该副本。
+17. 若 `paper/figures/` 中存在与插图对应的 TikZ `.tex` 源，正文必须优先以 TikZ 源引入；PNG、PDF 等位图或已渲染文件仅在不存在可用 TikZ 源时使用。TikZ 图及其读取的数据路径必须保持相对路径。

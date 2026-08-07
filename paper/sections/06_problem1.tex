@@ -1,3 +1,191 @@
 \section{问题一：给定方案下的系统状态}
 
-\todo{待模型卡、代码和 outputs 完成后，按目标、公式、求解、结果和结果分析展开。}
+\subsection{问题目标与建模思路}
+
+在给定 II 型锚链、锚链总长和重物球质量的条件下，分别求解风速为
+\(12\,\mathrm{m/s}\) 与 \(24\,\mathrm{m/s}\) 时浮标吃水、四节钢管和钢桶的倾角、锚链形状及浮标游动半径。根据第\ref{sec:assumptions}节的准静态假设，系统由浮标、四节密闭钢管、钢桶、重物球支线及锚链组成。浮标和刚性构件采用端点受力与力矩平衡，锚链采用均匀柔索悬链线描述；由各部分竖直投影之和等于给定水深，构造以吃水 \(\delta\) 为未知量的水深方程。
+
+图\ref{fig:q1-freebody}给出了三个关键受力单元。图中 \(T_{\mathrm h}\) 为整条受力链路中不变的水平张力分量，\(V_i\) 为构件上端张力的竖直分量；\(F_i\) 和 \(G_i\) 分别表示浮力和重力。重物球由钢桶--锚链连接点的无质量竖直短绳悬挂，是向下分支载荷，不计入钢桶至锚端的主链路长度。
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.30\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.72, >=Stealth, every node/.style={font=\small}]
+      \draw[fill=gray!10] (-0.9,-1.0) rectangle (0.9,1.0);
+      \draw (-0.9,1.0) arc (180:360:0.9 and 0.18);
+      \draw[dashed] (-0.9,-1.0) arc (180:360:0.9 and 0.18);
+      \draw[->,thick] (0,0) -- (0,1.7) node[right] {$F_{\mathrm b}$};
+      \draw[->,thick] (0,0) -- (1.8,0) node[above] {$F_{\mathrm w}$};
+      \draw[->,thick] (0,0) -- (0,-1.7) node[right] {$G_{\mathrm b}$};
+      \draw[->,thick] (0,-0.9) -- (-1.3,-1.9) node[left] {$T_1$};
+      \draw[dashed] (0,-0.9) -- (0,-2.0);
+      \draw (0,-1.45) arc (-90:-142:0.55) node[midway,below left] {$\theta_1$};
+    \end{tikzpicture}
+    \caption{浮标受力}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.30\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.72, >=Stealth, every node/.style={font=\small}]
+      \coordinate (A) at (0,0);
+      \coordinate (B) at (0.85,2.0);
+      \coordinate (C) at (0.425,1.0);
+      \draw[line width=1.2pt] (A) -- (B);
+      \draw[dashed] (B) -- +(0,0.75);
+      \draw[dashed] (A) -- +(0,-0.75);
+      \draw[->,thick] (B) -- +(0.55,0.92) node[right] {$T_i$};
+      \draw[->,thick] (A) -- +(-0.55,-0.92) node[left] {$T_{i+1}$};
+      \draw[->,thick] (C) -- +(0,0.68) node[right] {$F_i$};
+      \draw[->,thick] (C) -- +(0,-0.68) node[right] {$G_i$};
+      \draw (B) +(0,0.46) arc (90:67:0.46) node[midway,right] {$\theta_i$};
+      \draw (A) +(0,-0.46) arc (-90:-113:0.46) node[midway,below] {$\theta_{i+1}$};
+    \end{tikzpicture}
+    \caption{钢管通用受力}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.30\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.72, >=Stealth, every node/.style={font=\small}]
+      \coordinate (A) at (0,0);
+      \coordinate (B) at (0.85,2.0);
+      \coordinate (C) at (0.425,1.0);
+      \draw[line width=1.2pt] (A) -- (B);
+      \draw[fill=gray!15] (A) circle (0.28);
+      \draw (A) -- +(0,-0.88);
+      \fill (0,-0.88) circle (0.20);
+      \draw[->,thick] (B) -- +(0.56,0.95) node[right] {$T_5$};
+      \draw[->,thick] (A) -- +(-0.55,-0.92) node[left] {$T_6$};
+      \draw[->,thick] (C) -- +(0,0.68) node[right] {$F_{\mathrm d}$};
+      \draw[->,thick] (C) -- +(0,-0.68) node[right] {$G_{\mathrm d}$};
+      \draw[->,thick] (0,-1.08) -- +(0,-0.55) node[right] {$G_{\mathrm s}-F_{\mathrm s}$};
+      \node[above left] at (A) {钢桶};
+      \node[below] at (0,-1.24) {重物球};
+    \end{tikzpicture}
+    \caption{钢桶--重物球单元}
+  \end{subfigure}
+  \caption{问题一关键受力示意图}
+  \label{fig:q1-freebody}
+\end{figure}
+
+\subsection{浮标与刚性构件的平衡方程}
+
+设海水密度为 \(\rho\)，浮标半径为 \(R_{\mathrm b}\)，则吃水为 \(\delta\) 时浮标受到的浮力为
+\begin{equation}
+  F_{\mathrm b}=\rho g\pi R_{\mathrm b}^{2}\delta .
+  \label{eq:q1-buoyancy}
+\end{equation}
+风仅作用于露出水面的浮标侧面。按题设风荷载系数，水平风力写为
+\begin{equation}
+  F_{\mathrm w}(\delta,v)
+  =0.625\,[2(2-\delta)]v^2.
+  \label{eq:q1-wind-load}
+\end{equation}
+浮标平衡给出
+\begin{equation}
+  T_{\mathrm h}=F_{\mathrm w},
+  \qquad
+  V_1=F_{\mathrm b}-G_{\mathrm b},
+  \label{eq:q1-buoy-equilibrium}
+\end{equation}
+其中 \(T_{\mathrm h}\) 是向下传递的水平张力，\(V_1\) 为第 1 节钢管上端张力的竖直分量。
+
+对长度为 \(l_i\)、半径为 \(R_i\)、质量为 \(m_i\) 的密闭圆柱构件，其水中有效重力为
+\begin{equation}
+  W_i=G_i-F_i=m_i g-\rho g\pi R_i^2l_i.
+  \label{eq:q1-effective-weight}
+\end{equation}
+对构件上端取矩，并结合端点力平衡，可得到由上至下的递推关系
+\begin{equation}
+  V_{i+1}=V_i-W_i,
+  \qquad
+  \tan\theta_i=\frac{T_{\mathrm h}}{V_i-W_i/2},
+  \qquad
+  i=1,2,3,4,\mathrm d,
+  \label{eq:q1-rigid-recursion}
+\end{equation}
+其中 \(\theta_i\) 为构件轴线与竖直方向的夹角，\(i=\mathrm d\) 表示钢桶。对重物球，按第\ref{sec:assumptions}节的实心钢球假设，其向下分支的水中有效重力为
+\begin{equation}
+  W_{\mathrm s}=m_{\mathrm s}g\left(1-\frac{\rho}{\rho_{\mathrm s}}\right).
+  \label{eq:q1-ball-effective-weight}
+\end{equation}
+因此，进入锚链上端的竖直张力为
+\begin{equation}
+  V_{\mathrm a}=V_{\mathrm d}-W_{\mathrm d}-W_{\mathrm s}.
+  \label{eq:q1-chain-top-tension}
+\end{equation}
+
+\subsection{锚链悬链线与水深方程}
+
+设 II 型锚链的单位长度质量为 \(\mu\)，其水中有效单位重力为
+\begin{equation}
+  q=\mu g\left(1-\frac{\rho}{\rho_{\mathrm s}}\right).
+  \label{eq:q1-chain-effective-weight}
+\end{equation}
+由输出的静力检查日志可知，本工况取值下 \(q=59.642675159236\,\mathrm{N/m}\)。当锚链接触海床时，悬空段下端竖直张力为零；若全长悬空，则下端竖直张力为 \(V_{\ell}=V_{\mathrm a}-qL\)。两种情形可统一为
+\begin{equation}
+  V_{\ell}=\max\{0,V_{\mathrm a}-qL\},
+  \qquad
+  L_{\mathrm s}=\frac{V_{\mathrm a}-V_{\ell}}{q},
+  \qquad
+  L_0=L-L_{\mathrm s},
+  \label{eq:q1-chain-regime}
+\end{equation}
+其中 \(L_{\mathrm s}\) 和 \(L_0\) 分别为悬空链长和卧底链长。根据均匀柔索悬链线的弧长参数表达式，锚链的垂向落差与水平跨度为
+\begin{equation}
+  D_{\mathrm a}
+  =\frac{\sqrt{T_{\mathrm h}^2+V_{\mathrm a}^2}-
+  \sqrt{T_{\mathrm h}^2+V_{\ell}^2}}{q},
+  \label{eq:q1-chain-drop}
+\end{equation}
+\begin{equation}
+  X_{\mathrm a}
+  =\frac{T_{\mathrm h}}{q}
+  \left[\operatorname{asinh}\left(\frac{V_{\mathrm a}}{T_{\mathrm h}}\right)-
+  \operatorname{asinh}\left(\frac{V_{\ell}}{T_{\mathrm h}}\right)\right].
+  \label{eq:q1-chain-span}
+\end{equation}
+
+将浮标吃水、五个刚性构件的竖直投影和锚链垂向落差相加，得到模型水深函数
+\begin{equation}
+  H(\delta;v)=\delta+
+  \sum_{i=1}^{4}l_i\cos\theta_i+
+  l_{\mathrm d}\cos\theta_{\mathrm d}+D_{\mathrm a}.
+  \label{eq:q1-depth-function}
+\end{equation}
+令 \(H(\delta;v)=18\,\mathrm{m}\)，在可行区间 \([0.670,0.850]\,\mathrm{m}\) 内用二分法求 \(\delta\)。浮标相对锚点的游动半径则为
+\begin{equation}
+  r=\sum_{i=1}^{4}l_i\sin\theta_i+
+  l_{\mathrm d}\sin\theta_{\mathrm d}+X_{\mathrm a}+L_0.
+  \label{eq:q1-swing-radius}
+\end{equation}
+
+\subsection{求解结果与分析}
+
+图\ref{fig:q1-depth-draft}展示了两种风速下的水深函数及其与目标水深的交点。两条曲线在可行区间内均与 \(18\,\mathrm{m}\) 相交，对应的吃水解分别为 \(0.683\,\mathrm{m}\) 和 \(0.697\,\mathrm{m}\)。
+
+\begin{figure}[H]
+  \centering
+  \includestandalone[mode=tex]{figures/q1_depth_vs_draft}
+  \caption{不同风速下浮标吃水与模型水深的关系}
+  \label{fig:q1-depth-draft}
+\end{figure}
+
+表\ref{tab:q1-static-results}列出 MATLAB 脚本自动生成的最终结果。风速由 \(12\,\mathrm{m/s}\) 增至 \(24\,\mathrm{m/s}\) 时，四节钢管的倾角均由约 \(1.16^\circ\) 增至约 \(4.41^\circ\)--\(4.50^\circ\)，钢桶倾角由 \(1.202^\circ\) 增至 \(4.566^\circ\)，表明系统偏移随风荷载增强而增大；相应的游动半径由 \(14.654\,\mathrm{m}\) 增至 \(17.780\,\mathrm{m}\)。
+
+\begin{table}[H]
+  \centering
+  \caption{问题一两种风速下的静力平衡结果}
+  \label{tab:q1-static-results}
+  \small
+  \resizebox{\textwidth}{!}{\input{../outputs/q1/tables/q1_static_results.tex}}
+\end{table}
+
+图\ref{fig:q1-chain-shapes}给出了两种工况下的锚链坐标。\(12\,\mathrm{m/s}\) 时，悬空链长为 \(15.801\,\mathrm{m}\)，尚有 \(6.249\,\mathrm{m}\) 锚链卧底，锚端角为 \(0^\circ\)；\(24\,\mathrm{m/s}\) 时，锚链全长悬空，锚端角为 \(4.471^\circ\)。两种工况下锚端角均小于 \(16^\circ\)，满足题设安全判据。
+
+\begin{figure}[H]
+  \centering
+  \includestandalone[mode=tex]{figures/q1_chain_shapes}
+  \caption{两种风速下的锚链形状与海床接触状态}
+  \label{fig:q1-chain-shapes}
+\end{figure}
+
+最后，对数值解进行合理性检查。两种风速下浮标吃水均在 \([0,2]\,\mathrm{m}\) 内；锚链长度守恒残差均为 \(0\)，水深绝对残差分别为 \(7.105\times10^{-15}\,\mathrm{m}\) 和 \(3.553\times10^{-14}\,\mathrm{m}\)。这说明二分求根、刚性构件递推与悬链线拼接在当前假设和输入下满足既定的几何与静力一致性条件。由于重物球材质、锚链排水体积及海床抗拖移的处理依赖第\ref{sec:assumptions}节的口径，上述结果应在该假设范围内解释。
