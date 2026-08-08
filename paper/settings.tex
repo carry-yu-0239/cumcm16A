@@ -2,6 +2,7 @@
 % 使用 TeX Live 自带 Fandol 字体，避免依赖本机 Windows 字体。
 \usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
 \usepackage{setspace}
+\usepackage{indentfirst}
 \setstretch{1.28}
 \setlength{\parindent}{2em}
 \setlength{\parskip}{0pt}
@@ -39,12 +40,13 @@
 }
 
 % 标题层级：不使用目录，但保留清晰层次。
+% 使用非星号 \titlespacing，使标题后的首段保留正常的 2em 首行缩进。
 \titleformat{\section}{\centering\heiti\zihao{3}}{\thesection}{1em}{}
 \titleformat{\subsection}{\heiti\zihao{4}}{\thesubsection}{0.8em}{}
 \titleformat{\subsubsection}{\heiti\zihao{-4}}{\thesubsubsection}{0.6em}{}
-\titlespacing*{\section}{0pt}{1.4em}{0.8em}
-\titlespacing*{\subsection}{0pt}{1.0em}{0.5em}
-\titlespacing*{\subsubsection}{0pt}{0.8em}{0.3em}
+\titlespacing{\section}{0pt}{1.4em}{0.8em}
+\titlespacing{\subsection}{0pt}{1.0em}{0.5em}
+\titlespacing{\subsubsection}{0pt}{0.8em}{0.3em}
 
 \setlist[itemize]{leftmargin=2.5em,itemsep=0.2em,topsep=0.3em}
 \setlist[enumerate]{leftmargin=2.8em,itemsep=0.2em,topsep=0.3em}
